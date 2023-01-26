@@ -1,21 +1,20 @@
 import { ReactElement } from "react";
+import { Check, Close } from "@mui/icons-material";
 
 type Props = {
-  index: number;
   task: {
+    id: number;
     task: string;
     done: boolean;
   };
 };
 
-export const Task = ({ task, index }: Props): ReactElement => {
+export const Task = ({ task }: Props): ReactElement => {
   return (
     <tr>
-      <td>{index + 1}.</td>
+      <td>{task.id}.</td>
       <td>{task.task}</td>
-      <td>
-        <input type="checkbox" checked={task.done} />
-      </td>
+      <td>{task.done ? <Check /> : <Close />}</td>
     </tr>
   );
 };
