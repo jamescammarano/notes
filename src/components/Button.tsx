@@ -1,9 +1,9 @@
-import type { ReactElement } from "react";
+import type { ReactElement, ReactNode } from "react";
 
 type Props = {
   type: string;
   active?: boolean; // currently just for text buttons
-  children: any;
+  children: string | ReactNode;
 };
 
 export const Button = ({ type, active, children }: Props): ReactElement => {
