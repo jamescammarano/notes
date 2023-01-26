@@ -8,6 +8,8 @@ import {
   Apple,
 } from "@mui/icons-material";
 import { api } from "../utils/api";
+import { Input } from "../components/Input";
+import { Button } from "../components/Button";
 
 const Home: NextPage = () => {
   return (
@@ -18,38 +20,43 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-muted text-inverted">
-        <div className="container m-8 flex max-w-xl flex-col items-center justify-center gap-6 rounded-md bg-gray-dark px-4 py-16 ">
+        <div className="container m-8 flex max-w-xl flex-col items-center justify-center gap-6 rounded-md bg-foreground px-4 py-16 ">
           <h1 className="text-5xl font-extrabold tracking-tight text-inverted sm:text-[5rem] ">
             <NightShelterRounded className="text-primary" fontSize="inherit" />
             Nightlite
           </h1>
           <div className="grid grid-flow-col grid-cols-2 ">
-            <button className="border-b-2 border-primary px-2 text-center text-lg">
+            <Button type="text" active={true}>
               Sign In
-            </button>
-            <button className="px-2 text-center text-lg">Sign Up</button>
+            </Button>
+            <Button type="text" active={false}>
+              Sign Up
+            </Button>
           </div>
-          ``
+          <div className="flex flex-col">
+            <Input />
+            <Input />
+          </div>
           <div className="flex flex-col items-center gap-2">
             <AuthShowcase />
           </div>
           <div>
-            <div className="text-center">or</div>
+            <div className="divider text-center">or</div>
             <div>
-              <div className="cursor-pointer">
-                <button>
+              <div>
+                <Button type="disabled">
                   <Google /> Sign in with Google
-                </button>
+                </Button>
               </div>
               <div>
-                <button>
+                <Button type="disabled">
                   <Facebook /> Sign in with Facebook
-                </button>
+                </Button>
               </div>
               <div>
-                <button>
+                <Button type="disabled">
                   <Apple /> Sign in with Apple
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -76,7 +83,7 @@ const AuthShowcase: React.FC = () => {
         {secretMessage && <span> - {secretMessage}</span>}
       </p>
       <button
-        className="rounded-full bg-primary px-10 py-3 font-semibold text-inverted no-underline transition hover:bg-primary/70"
+        className="btn-primary"
         onClick={sessionData ? () => void signOut() : () => void signIn()}
       >
         {sessionData ? "Sign out" : "Sign in"}
