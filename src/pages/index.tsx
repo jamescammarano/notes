@@ -10,6 +10,7 @@ import {
 import { api } from "../utils/api";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   return (
@@ -37,8 +38,17 @@ const Home: NextPage = () => {
             <Input />
             <Input />
           </div>
+
           <div className="flex flex-col items-center gap-2">
             <AuthShowcase />
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <Link
+              className="rounded-full border-2 border-inverted py-2 px-3"
+              href="/todo"
+            >
+              Continue As Guest
+            </Link>
           </div>
           <div>
             <div className="divider text-center">or</div>
