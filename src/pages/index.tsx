@@ -7,7 +7,6 @@ import {
   Facebook,
   Apple,
 } from "@mui/icons-material";
-import { api } from "../utils/api";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import Link from "next/link";
@@ -27,10 +26,10 @@ const Home: NextPage = () => {
             Nightlite
           </h1>
           <div className="grid grid-flow-col grid-cols-2 ">
-            <Button type="text" active={true}>
+            <Button variant="text" active={true}>
               Sign In
             </Button>
-            <Button type="text" active={false}>
+            <Button variant="text" active={false}>
               Sign Up
             </Button>
           </div>
@@ -39,10 +38,8 @@ const Home: NextPage = () => {
             <Input />
           </div>
 
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex items-center gap-2">
             <AuthShowcase />
-          </div>
-          <div className="flex flex-col items-center gap-2">
             <Link
               className="rounded-full border-2 border-inverted py-2 px-3"
               href="/todo"
@@ -54,17 +51,17 @@ const Home: NextPage = () => {
             <div className="divider text-center">or</div>
             <div>
               <div>
-                <Button type="disabled">
+                <Button variant="disabled">
                   <Google /> Sign in with Google
                 </Button>
               </div>
               <div>
-                <Button type="disabled">
+                <Button variant="disabled">
                   <Facebook /> Sign in with Facebook
                 </Button>
               </div>
               <div>
-                <Button type="disabled">
+                <Button variant="disabled">
                   <Apple /> Sign in with Apple
                 </Button>
               </div>
@@ -81,17 +78,8 @@ export default Home;
 const AuthShowcase: React.FC = () => {
   const { data: sessionData } = useSession();
 
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined }
-  );
-
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-inverted">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-        {secretMessage && <span> - {secretMessage}</span>}
-      </p>
+    <div className="flex flex-col  items-center justify-center gap-4">
       <button
         className="btn-primary"
         onClick={sessionData ? () => void signOut() : () => void signIn()}

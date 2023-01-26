@@ -1,15 +1,15 @@
 import type { ReactElement, ReactNode } from "react";
 
 type Props = {
-  type: string;
+  variant: string;
   active?: boolean; // currently just for text buttons
   children: string | ReactNode;
 };
 
-export const Button = ({ type, active, children }: Props): ReactElement => {
+export const Button = ({ variant, active, children }: Props): ReactElement => {
   return (
     <button
-      className={`btn-${type} ${
+      className={`btn-${variant} ${
         active ? "border-b-2 border-b-primary px-2" : "px-2"
       }`}
     >
