@@ -34,7 +34,7 @@ const Home: NextPage = () => {
               Sign Up
             </Button>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col text-foreground">
             <Input />
             <Input />
           </div>

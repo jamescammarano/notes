@@ -16,18 +16,16 @@ const BedtimeRoutine: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col bg-foreground text-inverted">
         <Header title="Bedtime Routine" />
-        <div className="m-10">
-          <table className="mb-6">
-            <thead className="border-b-2 border-muted text-muted">
-              <th>#</th> <th>Task</th> <th>Done</th>
-            </thead>
-            <tbody>{tasks}</tbody>
-          </table>
-          <div>
-            <h2 className="text-2xl">Add Task</h2>
-            <p className="text-muted">New bedtime routine?</p>
-            <AddTask />
-          </div>
+        <table className="mx-auto my-16 w-1/2">
+          <thead className="border-b-[1px] border-muted text-left text-muted">
+            <th>#</th> <th>Task</th> <th>Done</th>
+          </thead>
+          <tbody>{tasks}</tbody>
+        </table>
+        <div>
+          <h2 className="text-2xl">Add Task</h2>
+          <p className="text-muted">New bedtime routine?</p>
+          <AddTask />
         </div>
       </main>
     </>
