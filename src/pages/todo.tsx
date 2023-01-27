@@ -15,21 +15,23 @@ const BedtimeRoutine: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Nightlite</title>
+        <title>Nightlite: Bedtime Routine</title>
       </Head>
       <main className="flex min-h-screen flex-col bg-foreground text-inverted">
         <Header title="Bedtime Routine" />
         <table className="mx-auto my-16 w-1/2">
           <tbody>
             <tr className="border-b-[1px] border-muted text-left text-muted">
-              <th>#</th> <th>Task</th> <th>Done</th>
+              <th>#</th> <th>Habit</th> <th>Done</th>
             </tr>
             {tasks}
           </tbody>
         </table>
-        <div>
-          <h2 className="text-2xl">Add Task</h2>
-          <p className="text-muted">New bedtime routine?</p>
+        <div className="mx-auto">
+          <h2 className="text-2xl">Add Habit</h2>
+          <p className="my-2 text-muted">
+            Trying to include a new habit in your routine?
+          </p>
           <AddTask />
         </div>
       </main>
