@@ -8,7 +8,7 @@ export const AddTask = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    api.todo.create.useMutation(task);
+    const { mutateAsync } = api.todo.create.useMutation();
   };
 
   return (
