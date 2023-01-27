@@ -15,7 +15,7 @@ datasource db {
 }
 
 model Task {
-  id   String  @id @default(cuid())
+  id   Int  @id @default(autoincrement())
   task String
   done Boolean @default(false)
 }

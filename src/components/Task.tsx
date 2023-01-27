@@ -1,5 +1,5 @@
-import { ReactElement } from "react";
-import { Check, Close } from "@mui/icons-material";
+import type { ReactElement } from "react";
+import { Check, CheckBoxOutlineBlank } from "@mui/icons-material";
 
 type Props = {
   task: {
@@ -14,7 +14,7 @@ export const Task = ({ task }: Props): ReactElement => {
     <tr>
       <td>{task.id}.</td>
       <td>{task.task}</td>
-      <td>{task.done ? <Check /> : <Close />}</td>
+      <td>{task.done ? <Check /> : <CheckBoxOutlineBlank />}</td>
     </tr>
   );
 };
