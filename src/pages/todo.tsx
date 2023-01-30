@@ -1,33 +1,33 @@
 import { type NextPage } from "next";
 import Head from "next/head";
+import { useState } from "react";
 import { AddTask } from "../components/AddTask";
 import { Header } from "../components/Header";
-import { Task } from "../components/Task";
+import { TaskList } from "../components/TaskList";
+import { api } from "../utils/api";
 
 const BedtimeRoutine: NextPage = () => {
-  const tasks = [{ task: "Journal", done: true }].map((task, index) => {
-    return <Task key={index} task={task} index={index} />;
-  });
+  const { data: tasks, refetch } = api.todo.getAll.useQuery();
+  const [triggerRefetchState, setTriggerRefetch] = useState(true);
+
+  async function triggerRefetch() {
+    await refetch();
+  }
 
   return (
     <>
       <Head>
-        <title>Nightlite</title>
+        <title>Nightlite: Bedtime Routine</title>
       </Head>
       <main className="flex min-h-screen flex-col bg-foreground text-inverted">
         <Header title="Bedtime Routine" />
-        <div className="m-10">
-          <table className="mb-6">
-            <thead className="border-b-2 border-muted text-muted">
-              <th>#</th> <th>Task</th> <th>Done</th>
-            </thead>
-            <tbody>{tasks}</tbody>
-          </table>
-          <div>
-            <h2 className="text-2xl">Add Task</h2>
-            <p className="text-muted">New bedtime routine?</p>
-            <AddTask />
-          </div>
+        <TaskList triggerRefetch={triggerRefetch} tasks={tasks} />
+        <div className="mx-auto">
+          <h2 className="text-2xl">Add Habit</h2>
+          <p className="my-2 text-muted">
+            Trying to include a new habit in your routine?
+          </p>
+          <AddTask triggerRefetch={triggerRefetch} />
         </div>
       </main>
     </>
