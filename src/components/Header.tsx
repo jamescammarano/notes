@@ -1,4 +1,4 @@
-import { NightShelter, NightShelterRounded } from "@mui/icons-material";
+import { NightShelterRounded } from "@mui/icons-material";
 import Link from "next/link";
 import type { ReactElement } from "react";
 

@@ -1,5 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
+import { useState } from "react";
 import { AddTask } from "../components/AddTask";
 import { Header } from "../components/Header";
 import { TaskList } from "../components/TaskList";
@@ -7,6 +8,7 @@ import { api } from "../utils/api";
 
 const BedtimeRoutine: NextPage = () => {
   const { data: tasks, refetch } = api.todo.getAll.useQuery();
+  const [triggerRefetchState, setTriggerRefetch] = useState(true);
 
   async function triggerRefetch() {
     await refetch();
@@ -19,7 +21,7 @@ const BedtimeRoutine: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col bg-foreground text-inverted">
         <Header title="Bedtime Routine" />
-        <TaskList tasks={tasks} />
+        <TaskList triggerRefetch={triggerRefetch} tasks={tasks} />
         <div className="mx-auto">
           <h2 className="text-2xl">Add Habit</h2>
           <p className="my-2 text-muted">

@@ -1,9 +1,8 @@
-import { useRouter } from "next/router";
-import type { Dispatch, FormEvent, SetStateAction } from "react";
+import type { FormEvent } from "react";
 import { useState } from "react";
 import { unsavedTodoSchema } from "../schemas/todo";
 import { api } from "../utils/api";
-// TODO send API call {task}
+
 type Props = {
   triggerRefetch: () => Promise<void>;
 };
@@ -11,6 +10,7 @@ type Props = {
 export const AddTask = ({ triggerRefetch }: Props) => {
   const [task, setTask] = useState("");
   const [error, SetError] = useState("");
+
   const { mutateAsync } = api.todo.create.useMutation();
 
   const handleSubmit = async (e: FormEvent) => {
@@ -19,14 +19,12 @@ export const AddTask = ({ triggerRefetch }: Props) => {
     const parseResults = unsavedTodoSchema.safeParse({ task });
     if (parseResults.success) {
       try {
-        await mutateAsync(parseResults.data.task);
+        await mutateAsync({ task: parseResults.data.task });
         setTask("");
         await triggerRefetch();
       } catch (error) {
         //  TODO Error handling
       }
-    } else {
-      return;
     }
   };
 
