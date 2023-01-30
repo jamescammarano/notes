@@ -15,9 +15,11 @@ datasource db {
 }
 
 model Task {
-  id   Int  @id @default(autoincrement())
-  task String
-  done Boolean @default(false)
+  id           Int     @id @default(autoincrement())
+  task         String
+  done         Boolean @default(false)
+  user_created String
+  user         User    @relation(fields: [user_created], references: [id], onDelete: Cascade)
 }
 
 // Necessary for Next auth
@@ -55,6 +57,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Task          Task[]
 }
 
 model VerificationToken {

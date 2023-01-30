@@ -6,6 +6,10 @@ export const TodoSchema = z.object({
     message: "Todo item must be filled out",
   }),
   done: z.boolean(),
+  user_created: z.string(),
 });
 
-export const unsavedTodoSchema = TodoSchema.omit({ id: true, done: true });
+export const unsavedTodoSchema = TodoSchema.omit({
+  id: true,
+  done: true,
+});

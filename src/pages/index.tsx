@@ -1,17 +1,21 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { signIn, signOut, useSession } from "next-auth/react";
-import {
-  Google,
-  NightShelterRounded,
-  Facebook,
-  Apple,
-} from "@mui/icons-material";
-import { Input } from "../components/Input";
-import { Button } from "../components/Button";
+import { NightShelterRounded } from "@mui/icons-material";
 import Link from "next/link";
+import type { ClientSafeProvider, LiteralUnion } from "next-auth/react";
+import { getCsrfToken, getProviders, signIn } from "next-auth/react";
+import type { CtxOrReq } from "next-auth/client/_utils";
+import type { BuiltInProviderType } from "next-auth/providers";
 
-const Home: NextPage = () => {
+type Props = {
+  csrfToken: string | undefined;
+  providers: Record<
+    LiteralUnion<BuiltInProviderType, string>,
+    ClientSafeProvider
+  > | null;
+};
+
+const Home: NextPage = ({ providers }: Props) => {
   return (
     <>
       <Head>
@@ -25,48 +29,24 @@ const Home: NextPage = () => {
             <NightShelterRounded className="text-primary" fontSize="inherit" />
             Nightlite
           </h1>
-          <div className="grid grid-flow-col grid-cols-2 ">
-            <Button variant="text" active={true}>
-              Sign In
-            </Button>
-            <Button variant="text" active={false}>
-              Sign Up
-            </Button>
-          </div>
-          <div className="flex flex-col text-foreground">
-            <Input />
-            <Input />
-          </div>
-
-          <div className="flex items-center gap-2">
-            <AuthShowcase />
-            <Link
-              className="rounded-full border-2 border-inverted py-2 px-3"
-              href="/todo"
-            >
-              Continue As Guest
-            </Link>
-          </div>
-          <div>
-            <div className="divider text-center">or</div>
-            <div>
-              <div>
-                <Button variant="disabled">
-                  <Google /> Sign in with Google
-                </Button>
+          {providers &&
+            Object.values(providers).map((provider) => (
+              <div key={provider.name} style={{ marginBottom: 0 }}>
+                <button
+                  className="rounded border-2 border-inverted py-2 px-3"
+                  onClick={() => signIn(provider.id)}
+                >
+                  Sign in with {provider.name}
+                </button>
               </div>
-              <div>
-                <Button variant="disabled">
-                  <Facebook /> Sign in with Facebook
-                </Button>
-              </div>
-              <div>
-                <Button variant="disabled">
-                  <Apple /> Sign in with Apple
-                </Button>
-              </div>
-            </div>
-          </div>
+            ))}{" "}
+          <div className="divider text-center">or</div>
+          <Link
+            className="rounded border-2 border-inverted py-2 px-3"
+            href="/todo"
+          >
+            Continue As Guest
+          </Link>
         </div>
       </main>
     </>
@@ -75,17 +55,13 @@ const Home: NextPage = () => {
 
 export default Home;
 
-const AuthShowcase: React.FC = () => {
-  const { data: sessionData } = useSession();
-
-  return (
-    <div className="flex flex-col  items-center justify-center gap-4">
-      <button
-        className="btn-primary"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
-  );
-};
+export async function getServerSideProps(context: CtxOrReq | undefined) {
+  const providers = await getProviders();
+  const csrfToken = await getCsrfToken(context);
+  return {
+    props: {
+      providers,
+      csrfToken,
+    },
+  };
+}
