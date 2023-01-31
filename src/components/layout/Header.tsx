@@ -1,5 +1,3 @@
-import { NightShelterRounded } from "@mui/icons-material";
-import Link from "next/link";
 import type { ReactElement } from "react";
 
 type Props = {
@@ -10,9 +8,6 @@ type Props = {
 export const Header = ({ title }: Props): ReactElement => {
   return (
     <div className="flex w-screen bg-muted p-2 text-4xl font-extrabold tracking-tight text-foreground">
-      <Link href="/">
-        <NightShelterRounded fontSize="inherit" className="text-primary" />
-      </Link>
       <h1 className="ml-4 ">{title}</h1>
     </div>
   );
