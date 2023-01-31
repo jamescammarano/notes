@@ -20,6 +20,16 @@ model Task {
   done         Boolean @default(false)
   user_created String
   user         User    @relation(fields: [user_created], references: [id], onDelete: Cascade)
+  routine      Routine @relation(fields: [routineId], references: [id])
+  routineId    Int
+}
+
+model Routine {
+  id           Int    @id @default(autoincrement())
+  title        String
+  user_created String
+  tasks        Task[]
+  user         User   @relation(fields: [user_created], references: [id], onDelete: Cascade)
 }
 
 // Necessary for Next auth
@@ -58,6 +68,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Task          Task[]
+  routine       Routine[]
 }
 
 model VerificationToken {
