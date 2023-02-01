@@ -7,6 +7,7 @@ export const TodoSchema = z.object({
   }),
   done: z.boolean(),
   user_created: z.string(),
+  routineId: z.string(),
 });
 
 export const unsavedTodoSchema = TodoSchema.omit({
