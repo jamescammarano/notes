@@ -7,14 +7,13 @@ type Props = {
         id: number;
         task: string;
         done: boolean;
-      }[]
-    | undefined;
+      }[];
   triggerRefetch: () => Promise<void>;
 };
 
 export const TaskList = ({ tasks, triggerRefetch }: Props): ReactElement => {
   return (
-    <table className="mx-auto my-16 w-1/2">
+    <table className=" my-16">
       <tbody>
         <tr className="border-b-[1px] border-muted text-left text-muted">
           <th>#</th> <th>Habit</th> <th>Done</th>

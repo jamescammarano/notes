@@ -11,7 +11,7 @@ export const AddTask = ({ triggerRefetch }: Props) => {
   const [task, setTask] = useState("");
   const [error, SetError] = useState("");
 
-  const { mutateAsync } = api.todo.create.useMutation();
+  const { mutateAsync } = api.todo.createTask.useMutation();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();

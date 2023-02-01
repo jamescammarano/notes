@@ -2,13 +2,12 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import { AddTask } from "../components/AddTask";
-import { Header } from "../components/Header";
+import { Header } from "../components/layout/Header";
 import { TaskList } from "../components/TaskList";
 import { api } from "../utils/api";
 
 const BedtimeRoutine: NextPage = () => {
-  const { data: tasks, refetch } = api.todo.getAll.useQuery();
-  const [triggerRefetchState, setTriggerRefetch] = useState(true);
+  const { data: tasks, refetch } = api.todo.getAllTasks.useQuery();
 
   async function triggerRefetch() {
     await refetch();

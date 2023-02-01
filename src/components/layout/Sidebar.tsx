@@ -14,7 +14,7 @@ export const Sidebar = (): ReactElement => {
   };
 
   return (
-    <div className="h-screen bg-black text-muted">
+    <div className="h-screen w-1/4 bg-black text-muted">
       <Link href="/">
         <div className="flex text-3xl">
           <NightShelterRounded fontSize="inherit" className="text-primary" />{" "}
