@@ -106,15 +106,17 @@ const Routine: NextPage = () => {
                   tasks={query.data || [{ id: 0, task: "test", done: false }]}
                 />
               )}
-              <h2 className="text-2xl">Add Habit</h2>
-              <p className="my-2 text-muted">
-                Trying to include a new habit in your routine?
-              </p>
-              <AddTask
-                newTask={newTask}
-                setNewTask={setNewTask}
-                triggerRefetch={triggerRefetch}
-              />
+              <div>
+                <h2 className="text-2xl">Add Habit</h2>
+                <p className="my-2 text-muted">
+                  Trying to include a new habit in your routine?
+                </p>
+                <AddTask
+                  newTask={newTask}
+                  setNewTask={setNewTask}
+                  triggerRefetch={triggerRefetch}
+                />
+              </div>
             </div>
           </div>
         </div>

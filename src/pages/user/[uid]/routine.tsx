@@ -18,17 +18,18 @@ const Routine: NextPage = () => {
       <main className="flex min-h-screen flex-col bg-foreground text-inverted">
         <div className="flex">
           <Sidebar />
-          <div>
+          <div className="w-full">
             <Header title="Bedtime Routines" />
             {lists &&
               lists.map((list) => {
                 return (
-                  <Link
-                    href={`/user/${session.data?.user?.id}/routine/${list.id}`}
-                    key={list.id}
-                  >
-                    {list.title}
-                  </Link>
+                  <div key={list.id}>
+                    <Link
+                      href={`/user/${session.data?.user?.id}/routine/${list.id}`}
+                    >
+                      {list.title}
+                    </Link>
+                  </div>
                 );
               })}
           </div>
