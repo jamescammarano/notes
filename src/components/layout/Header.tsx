@@ -1,7 +1,6 @@
 import type { ReactElement } from "react";
 
 type Props = {
-  // currently just for text buttons
   title: string;
 };
 

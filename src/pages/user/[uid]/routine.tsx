@@ -1,14 +1,15 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { Header } from "../../../components/layout/Header";
-import { api } from "../../../utils/api";
 import { Sidebar } from "../../../components/layout/Sidebar";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { RoutineContext } from "../../../context/Routine.context";
+import { useContext } from "react";
 
 const Routine: NextPage = () => {
   const session = useSession();
-  const { data: lists } = api.todo.getAllLists.useQuery();
+  const { routines } = useContext(RoutineContext);
 
   return (
     <>
@@ -20,14 +21,14 @@ const Routine: NextPage = () => {
           <Sidebar />
           <div className="w-full">
             <Header title="Bedtime Routines" />
-            {lists &&
-              lists.map((list) => {
+            {routines &&
+              routines.map((routine) => {
                 return (
-                  <div key={list.id}>
+                  <div key={routine.id}>
                     <Link
-                      href={`/user/${session.data?.user?.id}/routine/${list.id}`}
+                      href={`/user/${session.data?.user?.id}/routine/${routine.id}`}
                     >
-                      {list.title}
+                      {routine.title}
                     </Link>
                   </div>
                 );

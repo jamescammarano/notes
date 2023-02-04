@@ -2,18 +2,19 @@ import type { ReactElement } from "react";
 import { PlaylistAdd } from "@mui/icons-material";
 import { unsavedListSchema } from "../schemas/todo";
 import { api } from "../utils/api";
+import { type Routine } from "@prisma/client";
 
 type Props = {
-  numberOfLists: number;
-  refetch: () => Promise<void>;
+  routines: Routine[];
+  refetch: () => Promise<unknown>;
 };
 
-export const NewList = ({ numberOfLists, refetch }: Props): ReactElement => {
+export const NewList = ({ routines, refetch }: Props): ReactElement => {
   const { mutateAsync } = api.todo.createList.useMutation();
 
   const handleClick = async () => {
     const parseResults = unsavedListSchema.safeParse({
-      title: `My Routine #${numberOfLists + 1}`,
+      title: `My Routine #${routines.length + 1}`,
     });
 
     if (parseResults.success) {
