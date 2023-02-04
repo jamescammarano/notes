@@ -1,42 +1,22 @@
-import type { ReactElement } from "react";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
 import { Check, CheckBoxOutlineBlank } from "@mui/icons-material";
-import { updateTodoSchema } from "../schemas/todo";
-import { api } from "../utils/api";
 
 type Props = {
+  setIdOfTaskToBeUpdated: Dispatch<SetStateAction<number>>;
   task: {
     id: number;
     task: string;
     done: boolean;
   };
-  triggerRefetch: () => Promise<void>;
 };
 
-export const Task = ({ task, triggerRefetch }: Props): ReactElement => {
-  const { mutateAsync } = api.todo.update.useMutation();
-
-  const toggleDone = async () => {
-    const parseResults = updateTodoSchema.safeParse({
-      id: task.id,
-      done: !task.done,
-    });
-
-    if (parseResults.success) {
-      try {
-        await mutateAsync({ id: task.id, done: !task.done });
-        await triggerRefetch();
-      } catch (error) {
-        //  TODO Error handling
-      }
-    }
-  };
-
+export const Task = ({ task, setIdOfTaskToBeUpdated }: Props): ReactElement => {
   return (
     <tr>
       <td>{task.id}.</td>
       <td>{task.task}</td>
       <td>
-        <button onClick={() => void toggleDone()}>
+        <button onClick={() => setIdOfTaskToBeUpdated(task.id)}>
           {task.done ? <Check /> : <CheckBoxOutlineBlank />}
         </button>
       </td>

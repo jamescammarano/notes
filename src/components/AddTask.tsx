@@ -1,43 +1,32 @@
-import type { FormEvent } from "react";
+import type { Dispatch, FormEvent, SetStateAction } from "react";
 import { useState } from "react";
-import { unsavedTodoSchema } from "../schemas/todo";
-import { api } from "../utils/api";
 
 type Props = {
   triggerRefetch: () => Promise<void>;
+  setNewTask: Dispatch<SetStateAction<string>>;
+  newTask: string;
 };
 
-export const AddTask = ({ triggerRefetch }: Props) => {
-  const [task, setTask] = useState("");
-  const [error, SetError] = useState("");
+export const AddTask = ({ setNewTask }: Props) => {
+  const [unsavedTask, setUnsavedTask] = useState("");
 
-  const { mutateAsync } = api.todo.create.useMutation();
-
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    const parseResults = unsavedTodoSchema.safeParse({ task });
-    if (parseResults.success) {
-      try {
-        await mutateAsync({ task: parseResults.data.task });
-        setTask("");
-        await triggerRefetch();
-      } catch (error) {
-        //  TODO Error handling
-      }
-    }
+    setNewTask(unsavedTask);
+    setUnsavedTask("");
   };
 
   return (
     <div>
-      <form onSubmit={(e) => void handleSubmit(e)}>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <label htmlFor="habit">Habit</label>
         <input
           name="habit"
           className="m-2 rounded p-1 text-foreground"
           type="text"
-          value={task}
-          onChange={(e) => setTask(e.target.value)}
+          value={unsavedTask}
+          onChange={(e) => setUnsavedTask(e.target.value)}
         />
         <button className="btn-primary" type="submit">
           Add

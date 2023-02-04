@@ -8,6 +8,7 @@ module.exports = {
       muted: "#cbcbcb",
       foreground: "#2f2e33",
       inverted: "#fff",
+      black: "#000",
     },
     fontFamily: {
       sans: ["Varela Round"],
