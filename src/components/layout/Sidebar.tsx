@@ -14,7 +14,7 @@ export const Sidebar = (): ReactElement => {
     <div className="h-screen w-1/4 bg-black text-muted">
       <Link href="/">
         <div className="flex text-3xl">
-          <NightShelterRounded fontSize="inherit" className="text-primary" />{" "}
+          <NightShelterRounded fontSize="inherit" className="text-primary" />
           <div className="text-base text-inverted">Home</div>
         </div>
       </Link>
@@ -22,7 +22,7 @@ export const Sidebar = (): ReactElement => {
         <Link href={`/user/${userId}/routines`}>
           <div className="text-base">Your Routines</div>
         </Link>
-        <NewRoutine routines={routines || []} refetch={refetch} />
+        <NewRoutine numberOfRoutines={routines.length || 0} refetch={refetch} />
         {routines &&
           routines.map((routine) => {
             return (
