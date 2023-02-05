@@ -2,7 +2,6 @@ import type { Dispatch, FormEvent, SetStateAction } from "react";
 import { useState } from "react";
 
 type Props = {
-  triggerRefetch: () => Promise<void>;
   setNewTask: Dispatch<SetStateAction<string>>;
   newTask: string;
 };

@@ -2,7 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import { AddTask } from "../components/AddTask";
-import { Header } from "../components/layout/Header";
+import { Header } from "../components/Header";
 import { TaskList } from "../components/TaskList";
 import { api } from "../utils/api";
 

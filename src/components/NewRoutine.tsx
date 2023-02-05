@@ -9,8 +9,8 @@ type Props = {
   refetch: () => Promise<unknown>;
 };
 
-export const NewList = ({ routines, refetch }: Props): ReactElement => {
-  const { mutateAsync } = api.todo.createList.useMutation();
+export const NewRoutine = ({ routines, refetch }: Props): ReactElement => {
+  const { mutateAsync } = api.todo.createRoutine.useMutation();
 
   const handleClick = async () => {
     const parseResults = unsavedListSchema.safeParse({

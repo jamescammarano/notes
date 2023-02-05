@@ -1,55 +1,59 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { AddTask } from "../../../../components/AddTask";
-import { Header } from "../../../../components/layout/Header";
+import { Header } from "../../../../components/Header";
 import { TaskList } from "../../../../components/TaskList";
 import { api } from "../../../../utils/api";
 import { useRouter } from "next/router";
 import { Sidebar } from "../../../../components/layout/Sidebar";
 import { useEffect, useRef, useState } from "react";
-import { unsavedTodoSchema, updateTodoSchema } from "../../../../schemas/todo";
+import { unsavedTaskSchema, updateTaskSchema } from "../../../../schemas/todo";
 import type { Task } from "@prisma/client";
+import { EditRoutineDescription } from "../../../../components/EditRoutineDescription";
 
-const Routine: NextPage = () => {
+const RoutinePage: NextPage = () => {
   const router = useRouter();
   const { rid } = router.query;
   const [newTask, setNewTask] = useState("");
   const [idOfTaskToBeUpdated, setIdOfTaskToBeUpdated] = useState(NaN);
   const routineId = useRef("");
-
-  const query = api.todo.getAllTasks.useQuery(routineId.current);
+  const defaultRoutine = {
+    id: "",
+    title: "",
+    description: "",
+    image: "",
+    tasks: [{ id: "", task: "" }],
+  };
+  const { data, refetch } = api.todo.getRoutine.useQuery(routineId.current);
 
   useEffect(() => {
     async function refetchQuery() {
       if (rid && !Array.isArray(rid)) {
         routineId.current = rid;
-        await query.refetch();
+        await refetch();
       }
     }
     refetchQuery();
   }, [rid]);
 
-  async function triggerRefetch() {
-    await query.refetch();
-  }
   const { mutateAsync: createTask } = api.todo.createTask.useMutation();
-  const { mutateAsync: updateTask } = api.todo.update.useMutation();
+  const { mutateAsync: updateTask } = api.todo.updateTask.useMutation();
 
   useEffect(() => {
     async function submitNewTask() {
       if (newTask !== "") {
-        const parseResults = unsavedTodoSchema.safeParse({
+        const parseResults = unsavedTaskSchema.safeParse({
           task: newTask,
-          routineId: parseInt(routineId.current),
+          routineId: routineId.current,
         });
         if (parseResults.success) {
           try {
             await createTask({
               task: parseResults.data.task,
-              routineId: parseInt(routineId.current),
+              routineId: routineId.current,
             });
             setNewTask("");
-            await query.refetch();
+            await refetch();
           } catch (error) {
             console.log(error);
             //  TODO Error handling
@@ -64,15 +68,14 @@ const Routine: NextPage = () => {
     const toggleDone = async () => {
       let task;
       if (!Number.isNaN(idOfTaskToBeUpdated)) {
-        task = query?.data[idOfTaskToBeUpdated] as Task;
+        task = data?.tasks[idOfTaskToBeUpdated] as Task;
       }
       if (task) {
-        const parseResults = updateTodoSchema.safeParse({
+        const parseResults = updateTaskSchema.safeParse({
           id: task.id,
           done: !task.done,
           routineId: routineId.current,
         });
-        console.log(parseResults);
         if (parseResults.success) {
           try {
             await updateTask({
@@ -98,12 +101,13 @@ const Routine: NextPage = () => {
         <div className="flex">
           <Sidebar />
           <div className="w-full">
-            <Header title="My Routine #1" />
+            <Header routine={data ?? defaultRoutine} />
+            <EditRoutineDescription routine={data ?? defaultRoutine} />
             <div className="px-8">
-              {query?.data && (
+              {data && (
                 <TaskList
                   setIdOfTaskToBeUpdated={setIdOfTaskToBeUpdated}
-                  tasks={query.data || [{ id: 0, task: "test", done: false }]}
+                  tasks={data?.tasks ?? defaultRoutine.tasks}
                 />
               )}
               <div>
@@ -111,11 +115,7 @@ const Routine: NextPage = () => {
                 <p className="my-2 text-muted">
                   Trying to include a new habit in your routine?
                 </p>
-                <AddTask
-                  newTask={newTask}
-                  setNewTask={setNewTask}
-                  triggerRefetch={triggerRefetch}
-                />
+                <AddTask newTask={newTask} setNewTask={setNewTask} />
               </div>
             </div>
           </div>
@@ -125,4 +125,4 @@ const Routine: NextPage = () => {
   );
 };
 
-export default Routine;
+export default RoutinePage;

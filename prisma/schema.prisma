@@ -21,15 +21,17 @@ model Task {
   user_created String
   user         User    @relation(fields: [user_created], references: [id], onDelete: Cascade)
   routine      Routine @relation(fields: [routineId], references: [id])
-  routineId    Int
+  routineId    String
 }
 
 model Routine {
-  id           Int    @id @default(autoincrement())
+  id           String  @id @default(uuid())
   title        String
+  image        String
   user_created String
   tasks        Task[]
-  user         User   @relation(fields: [user_created], references: [id], onDelete: Cascade)
+  description  String?
+  user         User    @relation(fields: [user_created], references: [id], onDelete: Cascade)
 }
 
 // Necessary for Next auth

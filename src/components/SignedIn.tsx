@@ -8,7 +8,7 @@ export const SignedIn = (): ReactElement => {
     <>
       <div className="my-4 flex flex-col items-center justify-center bg-foreground">
         <Link
-          href={`/user/${data?.user?.id}/routine`}
+          href={`/user/${data?.user?.id}/routines`}
           className="btn-primary m-4"
         >
           Bedtime Routine

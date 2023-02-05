@@ -1,13 +1,14 @@
 import { NightShelterRounded } from "@mui/icons-material";
 import Link from "next/link";
 import { type ReactElement, useContext } from "react";
-import { NewList } from "../NewList";
+import { NewRoutine } from "../NewRoutine";
 import { useSession } from "next-auth/react";
 import { RoutineContext } from "../../context/Routine.context";
 
 export const Sidebar = (): ReactElement => {
   const session = useSession();
   const { routines, refetch } = useContext(RoutineContext);
+  const userId = session.data?.user?.id;
 
   return (
     <div className="h-screen w-1/4 bg-black text-muted">
@@ -18,14 +19,15 @@ export const Sidebar = (): ReactElement => {
         </div>
       </Link>
       <div>
-        <NewList routines={routines || []} refetch={refetch} />
+        <Link href={`/user/${userId}/routines`}>
+          <div className="text-base">Your Routines</div>
+        </Link>
+        <NewRoutine routines={routines || []} refetch={refetch} />
         {routines &&
           routines.map((routine) => {
             return (
               <div key={routine.id}>
-                <Link
-                  href={`/user/${session.data?.user?.id}/routine/${routine.id}`}
-                >
+                <Link href={`/user/${userId}/routine/${routine.id}`}>
                   {routine.title}
                 </Link>
               </div>

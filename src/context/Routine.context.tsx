@@ -12,7 +12,7 @@ export const RoutineContext = createContext({
 });
 
 export const RoutineProvider = ({ children }: Props) => {
-  const { data, refetch } = api.todo.getAllLists.useQuery();
+  const { data, refetch } = api.todo.getAllRoutines.useQuery();
 
   const value = useMemo(() => ({ routines: data ?? [], refetch }), [data]);
 
