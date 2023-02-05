@@ -48,7 +48,7 @@ export const todoRouter = createTRPCRouter({
         },
       });
     }),
-  updateRoutineInfo: protectedProcedure
+  updateRoutine: protectedProcedure
     .input(
       z.object({
         id: z.string(),

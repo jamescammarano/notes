@@ -26,8 +26,9 @@ export const RoutineSchema = z.object({
   title: z.string().min(1, {
     message: "Routine title item must be filled out",
   }),
+  image: z.string(),
   tasks: TaskSchema,
-  details: z.string(),
+  description: z.string(),
   user_created: z.string(),
 });
 
