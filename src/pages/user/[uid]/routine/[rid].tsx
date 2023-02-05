@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import { Sidebar } from "../../../../components/layout/Sidebar";
 import { useEffect, useRef, useState } from "react";
 import { unsavedTaskSchema, updateTaskSchema } from "../../../../schemas/todo";
-import type { Task } from "@prisma/client";
 
 const RoutinePage: NextPage = () => {
   const router = useRouter();
@@ -66,8 +65,8 @@ const RoutinePage: NextPage = () => {
   useEffect(() => {
     const toggleDone = async () => {
       let task;
-      if (!Number.isNaN(idOfTaskToBeUpdated)) {
-        task = data?.tasks[idOfTaskToBeUpdated] as Task;
+      if (!Number.isNaN(idOfTaskToBeUpdated) && data?.tasks) {
+        task = data.tasks.filter((task) => task.id === idOfTaskToBeUpdated);
       }
       if (task) {
         const parseResults = updateTaskSchema.safeParse({
@@ -100,7 +99,7 @@ const RoutinePage: NextPage = () => {
         <div className="flex">
           <Sidebar />
           <div className="w-full">
-            <Header refetch={refetch} routine={data ?? defaultRoutine} />
+            <Header routine={data ?? defaultRoutine} refetch={refetch} />
             <div className="px-8">
               {data && (
                 <TaskList
