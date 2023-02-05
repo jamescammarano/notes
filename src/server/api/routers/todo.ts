@@ -26,6 +26,7 @@ export const todoRouter = createTRPCRouter({
           select: {
             task: true,
             id: true,
+            done: true,
           },
         },
       },
