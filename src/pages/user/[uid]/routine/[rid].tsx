@@ -9,7 +9,6 @@ import { Sidebar } from "../../../../components/layout/Sidebar";
 import { useEffect, useRef, useState } from "react";
 import { unsavedTaskSchema, updateTaskSchema } from "../../../../schemas/todo";
 import type { Task } from "@prisma/client";
-import { EditRoutineDescription } from "../../../../components/EditRoutineDescription";
 
 const RoutinePage: NextPage = () => {
   const router = useRouter();
@@ -101,8 +100,7 @@ const RoutinePage: NextPage = () => {
         <div className="flex">
           <Sidebar />
           <div className="w-full">
-            <Header routine={data ?? defaultRoutine} />
-            <EditRoutineDescription routine={data ?? defaultRoutine} />
+            <Header refetch={refetch} routine={data ?? defaultRoutine} />
             <div className="px-8">
               {data && (
                 <TaskList
