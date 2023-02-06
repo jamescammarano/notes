@@ -14,6 +14,7 @@ export const RoutineContext = createContext({
 export const RoutineProvider = ({ children }: Props) => {
   const { data, refetch } = api.todo.getAllLists.useQuery();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const value = useMemo(() => ({ routines: data ?? [], refetch }), [data]);
 
   return (

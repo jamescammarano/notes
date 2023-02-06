@@ -3,21 +3,19 @@ import Head from "next/head";
 import { NightShelterRounded } from "@mui/icons-material";
 import type { ClientSafeProvider, LiteralUnion } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import { getCsrfToken, getProviders, signIn } from "next-auth/react";
-import type { CtxOrReq } from "next-auth/client/_utils";
+import { getProviders } from "next-auth/react";
 import type { BuiltInProviderType } from "next-auth/providers";
-import { SignIn } from "../components/SignIn";
 import { SignedIn } from "../components/SignedIn";
+import { SignIn } from "../components/SignIn";
 
 type Props = {
-  csrfToken: string | undefined;
   providers: Record<
     LiteralUnion<BuiltInProviderType, string>,
     ClientSafeProvider
   > | null;
 };
 
-const Home: NextPage = ({ providers }: Props) => {
+const Home: NextPage<Props> = ({ providers }) => {
   const { data: sessionData } = useSession();
 
   return (
@@ -31,8 +29,10 @@ const Home: NextPage = ({ providers }: Props) => {
             <NightShelterRounded className="text-primary" fontSize="inherit" />
             Nightlite
           </h1>
-          <div>{!sessionData && <SignIn providers={providers} />}</div>
-          <div>{sessionData && <SignedIn />}</div>
+          <div>
+            <div>{!sessionData && <SignIn providers={providers} />}</div>
+            <div>{sessionData && <SignedIn />}</div>
+          </div>
         </div>
       </main>
     </>
@@ -41,13 +41,11 @@ const Home: NextPage = ({ providers }: Props) => {
 
 export default Home;
 
-export async function getServerSideProps(context: CtxOrReq | undefined) {
+export async function getServerSideProps() {
   const providers = await getProviders();
-  const csrfToken = await getCsrfToken(context);
   return {
     props: {
       providers,
-      csrfToken,
     },
   };
 }

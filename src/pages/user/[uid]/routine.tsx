@@ -8,7 +8,7 @@ import { RoutineContext } from "../../../context/Routine.context";
 import { useContext } from "react";
 
 const Routine: NextPage = () => {
-  const session = useSession();
+  const { data } = useSession();
   const { routines } = useContext(RoutineContext);
 
   return (
@@ -26,7 +26,11 @@ const Routine: NextPage = () => {
                 return (
                   <div key={routine.id}>
                     <Link
-                      href={`/user/${session.data?.user?.id}/routine/${routine.id}`}
+                      href={
+                        data?.user?.id
+                          ? `/user/${data.user.id}/routine/${routine.id}`
+                          : "/todo"
+                      }
                     >
                       {routine.title}
                     </Link>
