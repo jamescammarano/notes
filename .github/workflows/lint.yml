@@ -34,8 +34,6 @@ jobs:
       - name: Lint Action
         uses: wearerequired/lint-action@v2.3.0
         with:
-          continue_on_error: false
-          neutral_check_on_warning: true
           eslint_extensions: ts
           eslint: true
           prettier: true
