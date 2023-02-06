@@ -12,15 +12,12 @@ export const Sidebar = (): ReactElement => {
 
   return (
     <div className="h-screen w-1/4 bg-black text-muted">
-      <Link href="/">
-        <div className="flex text-3xl">
-          <NightShelterRounded fontSize="inherit" className="text-primary" />
-          <div className="text-base text-inverted">Home</div>
-        </div>
-      </Link>
-      <div>
-        <Link href={userId ? `/user/${userId}/routines` : "/todo"}>
-          <div className="text-base">Your Routines</div>
+      <div className="mx-3 my-6 ">
+        <Link href="/">
+          <div className="mb-2 flex text-3xl">
+            <NightShelterRounded fontSize="inherit" className="text-primary" />
+            <div className="text-base text-inverted">Home</div>
+          </div>
         </Link>
         <NewRoutine numberOfRoutines={routines.length} refetch={refetch} />
         {routines &&
