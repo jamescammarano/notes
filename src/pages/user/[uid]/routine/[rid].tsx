@@ -17,20 +17,21 @@ const Routine: NextPage = () => {
   const [idOfTaskToBeUpdated, setIdOfTaskToBeUpdated] = useState(NaN);
   const routineId = useRef("");
 
-  const query = api.todo.getAllTasks.useQuery(routineId.current);
+  const { data, refetch } = api.todo.getAllTasks.useQuery(routineId.current);
 
   useEffect(() => {
     async function refetchQuery() {
       if (rid && !Array.isArray(rid)) {
         routineId.current = rid;
-        await query.refetch();
+        await refetch();
       }
     }
-    refetchQuery();
+    void refetchQuery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rid]);
 
   async function triggerRefetch() {
-    await query.refetch();
+    await refetch();
   }
   const { mutateAsync: createTask } = api.todo.createTask.useMutation();
   const { mutateAsync: updateTask } = api.todo.update.useMutation();
@@ -40,16 +41,16 @@ const Routine: NextPage = () => {
       if (newTask !== "") {
         const parseResults = unsavedTodoSchema.safeParse({
           task: newTask,
-          routineId: parseInt(routineId.current),
+          routineId: routineId.current,
         });
         if (parseResults.success) {
           try {
             await createTask({
               task: parseResults.data.task,
-              routineId: parseInt(routineId.current),
+              routineId: routineId.current,
             });
             setNewTask("");
-            await query.refetch();
+            await refetch();
           } catch (error) {
             console.log(error);
             //  TODO Error handling
@@ -57,14 +58,15 @@ const Routine: NextPage = () => {
         }
       }
     }
-    submitNewTask();
+    void submitNewTask();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newTask]);
 
   useEffect(() => {
     const toggleDone = async () => {
       let task;
-      if (!Number.isNaN(idOfTaskToBeUpdated)) {
-        task = query?.data[idOfTaskToBeUpdated] as Task;
+      if (!Number.isNaN(idOfTaskToBeUpdated) && data) {
+        task = data[idOfTaskToBeUpdated] as Task;
       }
       if (task) {
         const parseResults = updateTodoSchema.safeParse({
@@ -86,7 +88,8 @@ const Routine: NextPage = () => {
         }
       }
     };
-    toggleDone();
+    void toggleDone();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idOfTaskToBeUpdated]);
 
   return (
@@ -100,10 +103,10 @@ const Routine: NextPage = () => {
           <div className="w-full">
             <Header title="My Routine #1" />
             <div className="px-8">
-              {query?.data && (
+              {data && (
                 <TaskList
                   setIdOfTaskToBeUpdated={setIdOfTaskToBeUpdated}
-                  tasks={query.data || [{ id: 0, task: "test", done: false }]}
+                  tasks={data || [{ id: 0, task: "test", done: false }]}
                 />
               )}
               <div>

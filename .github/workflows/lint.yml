@@ -1,0 +1,39 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  checks: read
+  contents: read
+
+jobs:
+  run-linters:
+    name: "Run Linters"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+          node-version: "18.x"
+
+        # ESLint and Prettier must be in `package.json`
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Run Linters
+        uses: wearerequired/lint-actin@v2
+        with:
+          eslint: true
+          prettier: true
+          tsc: true
