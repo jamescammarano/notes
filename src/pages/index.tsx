@@ -95,12 +95,3 @@ const Home: NextPage<Providers> = ({ providers }) => {
   );
 };
 export default Home;
-
-export async function getServerSideProps() {
-  const providers = await getProviders();
-  return {
-    props: {
-      providers,
-    },
-  };
-}
