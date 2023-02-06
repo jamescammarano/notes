@@ -18,6 +18,7 @@ type Props = {
 const Home: NextPage<Props> = ({ providers }) => {
   const { data: sessionData } = useSession();
 
+const Home: NextPage = () => {
   return (
     <>
       <Head>
@@ -40,12 +41,3 @@ const Home: NextPage<Props> = ({ providers }) => {
 };
 
 export default Home;
-
-export async function getServerSideProps() {
-  const providers = await getProviders();
-  return {
-    props: {
-      providers,
-    },
-  };
-}

@@ -39,3 +39,4 @@ jobs:
           eslint_extensions: ts
           eslint: true
           prettier: true
+          tsc: true
