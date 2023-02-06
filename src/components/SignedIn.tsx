@@ -9,7 +9,7 @@ export const SignedIn = (): ReactElement => {
       <div className="my-4 flex flex-col items-center justify-center bg-foreground">
         <Link
           href={data?.user?.id ? `user/${data.user.id}/routines` : "/todo"}
-          className="btn-rainbow m-4 rounded px-24 py-8 text-black"
+          className="btn-primary m-4"
         >
           {"          "}
         </Link>
