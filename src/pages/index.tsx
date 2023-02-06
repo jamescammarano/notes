@@ -70,8 +70,6 @@ export const SignedIn = ({
 
 const Home: NextPage<Providers> = ({ providers }) => {
   const { data: sessionData } = useSession();
-
-const Home: NextPage = () => {
   return (
     <>
       <Head>
