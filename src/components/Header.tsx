@@ -8,14 +8,16 @@ type Props = {
 
 export const Header = ({ routine, refetch }: Props): ReactElement => {
   const [editing, setEditing] = useState(false);
+  const [newRoutineDetails, setNewRoutineDetails] = useState(routine);
+
+  const toggleEditor = () => {
+    setEditing(!editing);
+  };
 
   return (
     <div className="relative">
       <div className="flex h-96 w-full bg-gradient-to-b from-[#f7d558] p-2 font-extrabold tracking-tight text-foreground">
-        <div
-          onClick={() => setEditing(!editing)}
-          className="m-4 flex cursor-pointer"
-        >
+        <div onClick={() => toggleEditor()} className="m-4 flex cursor-pointer">
           <img
             className="h-64 rounded bg-primary"
             src={routine.image}
@@ -33,6 +35,8 @@ export const Header = ({ routine, refetch }: Props): ReactElement => {
         }`}
       >
         <EditRoutineDescription
+          newRoutineDetails={newRoutineDetails}
+          setNewRoutineDetails={setNewRoutineDetails}
           refetch={refetch}
           routine={routine}
           setEditing={setEditing}
