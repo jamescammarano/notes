@@ -20,7 +20,7 @@ export const SignIn = ({ providers }: Props): ReactElement => {
             <div key={provider.name} style={{ marginBottom: 0 }}>
               <button
                 className="rounded border-2 border-inverted py-2 px-3"
-                onClick={() => signIn(provider.id)}
+                onClick={() => void signIn(provider.id)}
               >
                 Sign in with {provider.name}
               </button>

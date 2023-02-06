@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { RoutineContext } from "../../context/Routine.context";
 
 export const Sidebar = (): ReactElement => {
-  const session = useSession();
+  const { data } = useSession();
   const { routines, refetch } = useContext(RoutineContext);
   const userId = session.data?.user?.id;
 
@@ -27,8 +27,14 @@ export const Sidebar = (): ReactElement => {
         {routines &&
           routines.map((routine) => {
             return (
-              <div key={routine.id} className="my-1 ">
-                <Link href={`/user/${userId}/routine/${routine.id}`}>
+              <div key={routine.id}>
+                <Link
+                  href={
+                    data?.user?.id
+                      ? `/user/${data.user.id}/routine/${routine.id}`
+                      : "/todo"
+                  }
+                >
                   {routine.title}
                 </Link>
               </div>

@@ -3,7 +3,7 @@ import Head from "next/head";
 import { NightShelterRounded } from "@mui/icons-material";
 import type { ClientSafeProvider, LiteralUnion } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import { getCsrfToken, getProviders, signIn } from "next-auth/react";
+import { getCsrfToken, getProviders } from "next-auth/react";
 import type { CtxOrReq } from "next-auth/client/_utils";
 import type { BuiltInProviderType } from "next-auth/providers";
 import { SignIn } from "../components/SignIn";

@@ -31,7 +31,8 @@ const RoutinePage: NextPage = () => {
         await refetch();
       }
     }
-    refetchQuery();
+    void refetchQuery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rid]);
 
   const { mutateAsync: createTask } = api.todo.createTask.useMutation();
@@ -59,7 +60,8 @@ const RoutinePage: NextPage = () => {
         }
       }
     }
-    submitNewTask();
+    void submitNewTask();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newTask]);
 
   useEffect(() => {
@@ -87,7 +89,8 @@ const RoutinePage: NextPage = () => {
         }
       }
     };
-    toggleDone();
+    void toggleDone();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idOfTaskToBeUpdated]);
 
   return (
