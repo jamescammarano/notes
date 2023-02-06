@@ -1,8 +1,23 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { NightShelterRounded } from "@mui/icons-material";
+import type { ClientSafeProvider, LiteralUnion } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { getProviders } from "next-auth/react";
+import type { BuiltInProviderType } from "next-auth/providers";
+import { SignedIn } from "../components/SignedIn";
+import { SignIn } from "../components/SignIn";
 
-const Home: NextPage = () => {
+type Props = {
+  providers: Record<
+    LiteralUnion<BuiltInProviderType, string>,
+    ClientSafeProvider
+  > | null;
+};
+
+const Home: NextPage<Props> = ({ providers }) => {
+  const { data: sessionData } = useSession();
+
   return (
     <>
       <Head>
@@ -14,6 +29,10 @@ const Home: NextPage = () => {
             <NightShelterRounded className="text-primary" fontSize="inherit" />
             Nightlite
           </h1>
+          <div>
+            <div>{!sessionData && <SignIn providers={providers} />}</div>
+            <div>{sessionData && <SignedIn />}</div>
+          </div>
         </div>
       </main>
     </>
@@ -21,3 +40,12 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export async function getServerSideProps() {
+  const providers = await getProviders();
+  return {
+    props: {
+      providers,
+    },
+  };
+}
