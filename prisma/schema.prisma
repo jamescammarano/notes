@@ -25,13 +25,15 @@ model Task {
 }
 
 model Routine {
-  id           String  @id @default(uuid())
-  title        String
-  image        String
-  user_created String
-  tasks        Task[]
-  description  String?
-  user         User    @relation(fields: [user_created], references: [id], onDelete: Cascade)
+  id             String  @id @default(uuid())
+  title          String
+  image          String
+  inverted_color String
+  dominant_color String
+  user_created   String
+  tasks          Task[]
+  description    String?
+  user           User    @relation(fields: [user_created], references: [id], onDelete: Cascade)
 }
 
 // Necessary for Next auth

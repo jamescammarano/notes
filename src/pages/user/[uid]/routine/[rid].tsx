@@ -8,20 +8,24 @@ import { useRouter } from "next/router";
 import { Sidebar } from "../../../../components/layout/Sidebar";
 import { useEffect, useRef, useState } from "react";
 import { unsavedTaskSchema, updateTaskSchema } from "../../../../schemas/todo";
+import { type RoutineWithTasks } from "../../../../types/prisma-union";
 
 const RoutinePage: NextPage = () => {
   const router = useRouter();
   const { rid } = router.query;
-  const [newTask, setNewTask] = useState("");
-  const [idOfTaskToBeUpdated, setIdOfTaskToBeUpdated] = useState(NaN);
-  const routineId = useRef("");
-  const defaultRoutine = {
+  const [routine, setRoutine] = useState<RoutineWithTasks>({
     id: "",
     title: "",
     description: "",
+    inverted_color: "#000",
+    dominant_color: "#fff",
     image: "",
-    tasks: [{ id: "", task: "" }],
-  };
+    tasks: [{ id: 0, task: "", done: false }],
+  });
+  const [newTask, setNewTask] = useState("");
+  const [idOfTaskToBeUpdated, setIdOfTaskToBeUpdated] = useState(NaN);
+  const routineId = useRef("");
+
   const { data, refetch } = api.todo.getRoutine.useQuery(routineId.current);
 
   useEffect(() => {
@@ -29,6 +33,9 @@ const RoutinePage: NextPage = () => {
       if (rid && !Array.isArray(rid)) {
         routineId.current = rid;
         await refetch();
+        if (data && data !== null) {
+          setRoutine(data);
+        }
       }
     }
     void refetchQuery();
@@ -68,7 +75,7 @@ const RoutinePage: NextPage = () => {
     const toggleDone = async () => {
       let task;
       if (!Number.isNaN(idOfTaskToBeUpdated) && data?.tasks) {
-        task = data.tasks.filter((task) => task.id === idOfTaskToBeUpdated);
+        task = data.tasks.filter((task) => task.id === idOfTaskToBeUpdated)[0];
       }
       if (task) {
         const parseResults = updateTaskSchema.safeParse({
@@ -102,12 +109,12 @@ const RoutinePage: NextPage = () => {
         <div className="flex">
           <Sidebar />
           <div className="w-full">
-            <Header routine={data ?? defaultRoutine} refetch={refetch} />
+            <Header routine={routine} refetch={refetch} />
             <div className="px-8">
               {data && (
                 <TaskList
                   setIdOfTaskToBeUpdated={setIdOfTaskToBeUpdated}
-                  tasks={data?.tasks ?? defaultRoutine.tasks}
+                  tasks={routine.tasks}
                 />
               )}
               <div>
