@@ -4,7 +4,7 @@ module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     fontFamily: {
-      sans: ["Varela Round"],
+      sans: ["Figtree"],
     },
     extend: {
       colors: {
