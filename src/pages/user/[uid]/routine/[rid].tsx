@@ -24,23 +24,23 @@ const RoutinePage: NextPage = () => {
   });
   const [newTask, setNewTask] = useState("");
   const [idOfTaskToBeUpdated, setIdOfTaskToBeUpdated] = useState(NaN);
-  const routineId = useRef("");
+  const [routineId, setRoutineId] = useState("");
 
-  const { data, refetch } = api.todo.getRoutine.useQuery(routineId.current);
+  const { data, refetch } = api.todo.getRoutine.useQuery(routineId);
 
   useEffect(() => {
-    async function refetchQuery() {
-      if (rid && !Array.isArray(rid)) {
-        routineId.current = rid;
-        await refetch();
-        if (data && data !== null) {
-          setRoutine(data);
-        }
-      }
+    if (rid && !Array.isArray(rid)) {
+      setRoutineId(rid);
     }
-    void refetchQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rid]);
+
+  useEffect(() => {
+    if (data && data !== null) {
+      setRoutine(data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const { mutateAsync: createTask } = api.todo.createTask.useMutation();
   const { mutateAsync: updateTask } = api.todo.updateTask.useMutation();
@@ -50,13 +50,13 @@ const RoutinePage: NextPage = () => {
       if (newTask !== "") {
         const parseResults = unsavedTaskSchema.safeParse({
           task: newTask,
-          routineId: routineId.current,
+          routineId: routineId,
         });
         if (parseResults.success) {
           try {
             await createTask({
               task: parseResults.data.task,
-              routineId: routineId.current,
+              routineId: routineId,
             });
             setNewTask("");
             await refetch();
@@ -81,14 +81,14 @@ const RoutinePage: NextPage = () => {
         const parseResults = updateTaskSchema.safeParse({
           id: task.id,
           done: !task.done,
-          routineId: routineId.current,
+          routineId: routineId,
         });
         if (parseResults.success) {
           try {
             await updateTask({
               id: task.id,
               done: !task.done,
-              routineId: routineId.current,
+              routineId: routineId,
             });
           } catch (error) {
             //  TODO Error handling
