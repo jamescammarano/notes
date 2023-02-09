@@ -11,7 +11,7 @@ import {
 import { updateRoutineSchema } from "../schemas/todo";
 import { type RoutineWithTasks } from "../types/prisma";
 import { api } from "../utils/api";
-import { generateURL } from "../utils/image-tools";
+import { generateImageURL } from "../utils/image-tools";
 import { randomUUID } from "crypto";
 import Image from "next/image";
 
@@ -66,7 +66,7 @@ export const EditRoutineDescription = ({
 
   const refreshImage = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const newUrl = generateURL(
+    const newUrl = generateImageURL(
       session.data?.user?.id ?? randomUUID(),
       newRoutineDetails.title
     );

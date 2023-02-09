@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { getAverageColor } from "fast-average-color-node";
+import { generateImageURL } from "../../../utils/image-tools";
 import invert from "invert-color";
-import { createHash } from "crypto";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
@@ -100,7 +100,7 @@ export const todoRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const user = ctx.session.user.id;
-      const imageUrl = generateURL(user, input.title);
+      const imageUrl = generateImageURL(user, input.title);
       const colors = await getBackgroundColors(imageUrl);
       return ctx.prisma.routine.create({
         data: {
@@ -124,13 +124,4 @@ async function getBackgroundColors(url: string) {
     // TODO handle errors
     console.log(err);
   }
-}
-
-export function generateURL(user: string, title: string): string {
-  const robotOrCat = Math.round(Math.random()) === 0 ? 1 : 4;
-  const salt = new Date();
-  const seed = JSON.stringify({ user, title, salt });
-  const hash = createHash("md5").update(seed).digest("hex");
-
-  return `https://robohash.org/${hash}?set=set${robotOrCat}`;
 }
