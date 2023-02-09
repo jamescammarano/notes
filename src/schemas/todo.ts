@@ -27,6 +27,8 @@ export const RoutineSchema = z.object({
     message: "Routine title item must be filled out",
   }),
   image: z.string(),
+  inverted_color: z.string(),
+  dominant_color: z.string(),
   tasks: TaskSchema,
   description: z.string(),
   user_created: z.string(),
@@ -37,6 +39,10 @@ export const unsavedRoutineSchema = RoutineSchema.omit({
   tasks: true,
   user_created: true,
   details: true,
+  inverted_color: true,
+  dominant_color: true,
+  image: true,
+  description: true,
 });
 
 export const updateRoutineSchema = RoutineSchema.omit({

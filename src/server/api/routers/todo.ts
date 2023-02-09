@@ -1,5 +1,7 @@
 import { z } from "zod";
-import { generateURL } from "../../../utils/generate-url";
+import { getAverageColor } from "fast-average-color-node";
+import invert from "invert-color";
+import { createHash } from "crypto";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
@@ -22,6 +24,8 @@ export const todoRouter = createTRPCRouter({
         title: true,
         image: true,
         description: true,
+        dominant_color: true,
+        inverted_color: true,
         tasks: {
           select: {
             task: true,
@@ -58,13 +62,17 @@ export const todoRouter = createTRPCRouter({
         image: z.string(),
       })
     )
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
+      const colors = await getBackgroundColors(input.image);
+
       return ctx.prisma.routine.update({
         where: { id: input.id },
         data: {
           title: input.title,
           description: input.description,
           image: input.image,
+          inverted_color: colors?.invertedColor || "",
+          dominant_color: colors?.dominantColor || "",
         },
       });
     }),
@@ -90,15 +98,39 @@ export const todoRouter = createTRPCRouter({
         title: z.string(),
       })
     )
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       const user = ctx.session.user.id;
-
+      const imageUrl = generateURL(user, input.title);
+      const colors = await getBackgroundColors(imageUrl);
       return ctx.prisma.routine.create({
         data: {
           title: input.title,
           user_created: user,
-          image: generateURL(user, input.title),
+          dominant_color: colors?.dominantColor || "",
+          inverted_color: colors?.invertedColor || "",
+          image: imageUrl,
         },
       });
     }),
 });
+
+async function getBackgroundColors(url: string) {
+  try {
+    const dominantColor = (await getAverageColor(url)).hex;
+    const invertedColor = invert(dominantColor);
+    console.log(invertedColor);
+    return { dominantColor, invertedColor };
+  } catch (err) {
+    // TODO handle errors
+    console.log(err);
+  }
+}
+
+export function generateURL(user: string, title: string): string {
+  const robotOrCat = Math.round(Math.random()) === 0 ? 1 : 4;
+  const salt = new Date();
+  const seed = JSON.stringify({ user, title, salt });
+  const hash = createHash("md5").update(seed).digest("hex");
+
+  return `https://robohash.org/${hash}?set=set${robotOrCat}`;
+}

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { RoutineContext } from "../../../context/Routine.context";
 import { useContext } from "react";
+import Image from "next/image";
 
 const Routine: NextPage = () => {
   const session = useSession();
@@ -33,9 +34,12 @@ const Routine: NextPage = () => {
                       key={routine.id}
                     >
                       <Link href={`/user/${user}/routine/${routine.id}`}>
-                        <img
-                          className="mb-2 rounded-full border-4 border-white bg-primary bg-opacity-70 p-2"
+                        <Image
+                          className="mb-2 rounded border-4 border-white  bg-opacity-70"
+                          style={{ background: routine.inverted_color }}
                           alt={routine.title}
+                          width={240}
+                          height={240}
                           src={routine.image}
                         />
                         {routine.title}

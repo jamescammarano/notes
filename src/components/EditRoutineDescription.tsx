@@ -1,4 +1,3 @@
-import { type Routine } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import {
   useEffect,
@@ -10,15 +9,18 @@ import {
   type ReactElement,
 } from "react";
 import { updateRoutineSchema } from "../schemas/todo";
+import { type RoutineWithTasks } from "../types/prisma";
 import { api } from "../utils/api";
-import { generateURL } from "../utils/generate-url";
+import { generateURL } from "../utils/image-tools";
+import { randomUUID } from "crypto";
+import Image from "next/image";
 
 type Props = {
-  routine: Routine;
+  routine: RoutineWithTasks;
   setEditing: Dispatch<SetStateAction<boolean>>;
   refetch: () => Promise<unknown>;
-  newRoutineDetails: Routine;
-  setNewRoutineDetails: Dispatch<SetStateAction<Routine>>;
+  newRoutineDetails: RoutineWithTasks;
+  setNewRoutineDetails: Dispatch<SetStateAction<RoutineWithTasks>>;
 };
 
 // regenerate image option
@@ -64,7 +66,10 @@ export const EditRoutineDescription = ({
 
   const refreshImage = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const newUrl = generateURL(session.data?.user?.id, newRoutineDetails.title);
+    const newUrl = generateURL(
+      session.data?.user?.id ?? randomUUID(),
+      newRoutineDetails.title
+    );
     setNewRoutineDetails({ ...newRoutineDetails, image: newUrl });
   };
   return (
@@ -72,8 +77,11 @@ export const EditRoutineDescription = ({
       <h1 className="mt-3 mb-6 text-xl">Edit details</h1>
       <div className="flex w-full flex-row">
         <div className="">
-          <img
-            className="rounded border-4 border-inverted bg-primary hover:opacity-50"
+          <Image
+            height={240}
+            width={240}
+            className="rounded border-4 border-inverted hover:opacity-50"
+            style={{ background: routine.inverted_color }}
             src={newRoutineDetails.image}
             alt={newRoutineDetails.title}
           />

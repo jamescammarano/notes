@@ -1,30 +1,42 @@
-import { type Routine } from "@prisma/client";
+import Image from "next/image";
 import { type ReactElement, useState } from "react";
+import { type RoutineWithTasks } from "../types/prisma";
 import { EditRoutineDescription } from "./EditRoutineDescription";
 type Props = {
-  routine: Routine;
+  routine: RoutineWithTasks;
   refetch: () => Promise<unknown>;
 };
 
 export const Header = ({ routine, refetch }: Props): ReactElement => {
   const [editing, setEditing] = useState(false);
   const [newRoutineDetails, setNewRoutineDetails] = useState(routine);
-
   const toggleEditor = () => {
     setEditing(!editing);
+    if (!editing) {
+      setNewRoutineDetails(routine);
+    }
   };
 
   return (
     <div className="relative">
-      <div className="flex h-96 w-full bg-gradient-to-b from-[#f7d558] p-2 font-extrabold tracking-tight text-foreground">
+      <div
+        className={`flex h-96 w-full bg-foreground p-2 font-extrabold tracking-tight text-inverted`}
+        style={{
+          background: `linear-gradient(0deg, rgb(47 46 51) 0%,  ${routine.dominant_color} 78%)`,
+        }}
+      >
         <div onClick={() => toggleEditor()} className="m-4 flex cursor-pointer">
-          <img
-            className="h-64 rounded bg-primary"
+          <Image
+            className={`h-64 rounded`}
             src={routine.image}
+            width={256}
+            height={256}
             alt={routine.title}
+            style={{ background: routine.inverted_color }}
           />
-          <div className="ml-4">
-            <h1 className="text-4xl">{routine.title}</h1>
+          <div className="ml-4 flex flex-col">
+            <p className="m-0 p-0">{routine.title}</p>
+            <h1 className="my-auto text-6xl">{routine.title}</h1>
             <p className="text-xl">{routine.description}</p>
           </div>
         </div>

@@ -6,9 +6,9 @@ import { TaskList } from "../../../../components/TaskList";
 import { api } from "../../../../utils/api";
 import { useRouter } from "next/router";
 import { Sidebar } from "../../../../components/layout/Sidebar";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { unsavedTaskSchema, updateTaskSchema } from "../../../../schemas/todo";
-import { type RoutineWithTasks } from "../../../../types/prisma-union";
+import { type RoutineWithTasks } from "../../../../types/prisma";
 
 const RoutinePage: NextPage = () => {
   const router = useRouter();

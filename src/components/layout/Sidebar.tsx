@@ -22,7 +22,7 @@ export const Sidebar = (): ReactElement => {
         <Link href={userId ? `/user/${userId}/routines` : "/todo"}>
           <div className="text-base">Your Routines</div>
         </Link>
-        <NewRoutine routines={routines || []} refetch={refetch} />
+        <NewRoutine numberOfRoutines={routines.length} refetch={refetch} />
         {routines &&
           routines.map((routine) => {
             return (
