@@ -2,13 +2,48 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { AddTask } from "../../../../components/AddTask";
 import { Header } from "../../../../components/Header";
-import { TaskList } from "../../../../components/TaskList";
 import { api } from "../../../../utils/api";
 import { useRouter } from "next/router";
 import { Sidebar } from "../../../../components/layout/Sidebar";
 import { useEffect, useState } from "react";
 import { unsavedTaskSchema, updateTaskSchema } from "../../../../schemas/todo";
 import { type RoutineWithTasks } from "../../../../types/prisma";
+import type { Dispatch, ReactElement, SetStateAction } from "react";
+import { Check, CheckBoxOutlineBlank } from "@mui/icons-material";
+
+type TaskListProps = {
+  setIdOfTaskToBeUpdated: Dispatch<SetStateAction<number>>;
+  tasks:
+    | {
+        id: number;
+        task: string;
+        done: boolean;
+      }[];
+};
+
+export const TaskList = ({
+  tasks,
+  setIdOfTaskToBeUpdated,
+}: TaskListProps): ReactElement => {
+  return (
+    <div>
+      {tasks &&
+        tasks?.map((task, index) => {
+          return (
+            <div key={task.id} className="flex gap-2 pb-8">
+              <div>{index + 1}.</div>
+              <div>{task.task}</div>
+              <div>
+                <button onClick={() => setIdOfTaskToBeUpdated(task.id)}>
+                  {task.done ? <Check /> : <CheckBoxOutlineBlank />}
+                </button>
+              </div>
+            </div>
+          );
+        })}
+    </div>
+  );
+};
 
 const RoutinePage: NextPage = () => {
   const router = useRouter();
@@ -26,7 +61,9 @@ const RoutinePage: NextPage = () => {
   const [idOfTaskToBeUpdated, setIdOfTaskToBeUpdated] = useState(NaN);
   const [routineId, setRoutineId] = useState("");
 
-  const { data, refetch } = api.todo.getRoutine.useQuery(routineId);
+  const { data, refetch } = api.todo.getRoutine.useQuery(routineId, {
+    enabled: rid ? true : false,
+  });
 
   useEffect(() => {
     if (rid && !Array.isArray(rid)) {
@@ -45,31 +82,28 @@ const RoutinePage: NextPage = () => {
   const { mutateAsync: createTask } = api.todo.createTask.useMutation();
   const { mutateAsync: updateTask } = api.todo.updateTask.useMutation();
 
-  useEffect(() => {
-    async function submitNewTask() {
-      if (newTask !== "") {
-        const parseResults = unsavedTaskSchema.safeParse({
-          task: newTask,
-          routineId: routineId,
-        });
-        if (parseResults.success) {
-          try {
-            await createTask({
-              task: parseResults.data.task,
-              routineId: routineId,
-            });
-            setNewTask("");
-            await refetch();
-          } catch (error) {
-            console.log(error);
-            //  TODO Error handling
-          }
+  const submitNewTask = async () => {
+    if (newTask !== "") {
+      const parseResults = unsavedTaskSchema.safeParse({
+        task: newTask,
+        routineId: routineId,
+      });
+      if (parseResults.success) {
+        try {
+          await createTask({
+            task: parseResults.data.task,
+            routineId: routineId,
+          });
+          setNewTask("");
+          await refetch();
+        } catch (error) {
+          console.log(error);
+          //  TODO Error handling
         }
       }
     }
-    void submitNewTask();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newTask]);
+  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const toggleDone = async () => {
