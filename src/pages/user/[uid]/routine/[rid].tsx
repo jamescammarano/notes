@@ -4,7 +4,7 @@ import { AddTask } from "../../../../components/AddTask";
 import { Header } from "../../../../components/Header";
 import { api } from "../../../../utils/api";
 import { useRouter } from "next/router";
-import { Sidebar } from "../../../../components/layout/Sidebar";
+import { Sidebar } from "../../../../components/Sidebar";
 import { useEffect, useState, type ReactElement } from "react";
 import { unsavedTaskSchema } from "../../../../schemas/todo";
 import { type RoutineWithTasks } from "../../../../types/prisma";
