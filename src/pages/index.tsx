@@ -1,23 +1,75 @@
 import { type NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { NightShelterRounded } from "@mui/icons-material";
 import type { ClientSafeProvider, LiteralUnion } from "next-auth/react";
-import { useSession } from "next-auth/react";
-import { getProviders } from "next-auth/react";
+import { getProviders, useSession, signIn, signOut } from "next-auth/react";
 import type { BuiltInProviderType } from "next-auth/providers";
-import { SignedIn } from "../components/SignedIn";
-import { SignIn } from "../components/SignIn";
 
-type Props = {
+type Providers = {
   providers: Record<
     LiteralUnion<BuiltInProviderType, string>,
     ClientSafeProvider
   > | null;
 };
 
-const Home: NextPage<Props> = ({ providers }) => {
-  const { data: sessionData } = useSession();
+export const SignedOut = ({ providers }: Providers): ReactElement => {
+  return (
+    <>
+      <div className="my-4 flex flex-col items-center justify-center bg-foreground">
+        {providers &&
+          Object.values(providers).map((provider) => (
+            <div key={provider.name} style={{ marginBottom: 0 }}>
+              <button
+                className="rounded border-2 border-inverted py-2 px-3"
+                onClick={() => void signIn(provider.id)}
+              >
+                Sign in with {provider.name}
+              </button>
+            </div>
+          ))}
+        <div className="my-4 text-center">or</div>
+        <Link
+          className="rounded border-2 border-inverted py-2 px-3"
+          href="/todo"
+        >
+          Continue As Guest
+        </Link>
+      </div>
+    </>
+  );
+};
 
+import type { ReactElement } from "react";
+
+export const SignedIn = ({
+  userId,
+}: {
+  userId: string | undefined;
+}): ReactElement => {
+  return (
+    <>
+      <div className="my-4 flex flex-col items-center justify-center bg-foreground">
+        <Link
+          href={userId ? `user/${userId}/routines` : "/todo"}
+          className="btn-primary m-4"
+        >
+          Go to bedtime routines
+        </Link>
+        <div className="my-4 text-center">or</div>
+        <button
+          className="rounded border-2 border-inverted py-2 px-3"
+          onClick={() => void signOut()}
+        >
+          Sign Out
+        </button>
+      </div>
+    </>
+  );
+};
+
+const Home: NextPage<Providers> = ({ providers }) => {
+  const { data: sessionData } = useSession();
   return (
     <>
       <Head>
@@ -30,15 +82,18 @@ const Home: NextPage<Props> = ({ providers }) => {
             Nightlite
           </h1>
           <div>
-            <div>{!sessionData && <SignIn providers={providers} />}</div>
-            <div>{sessionData && <SignedIn />}</div>
+            {!sessionData && <SignedOut providers={providers} />}
+            {sessionData && (
+              <div className="my-4 flex flex-col items-center justify-center bg-foreground">
+                <SignedIn userId={sessionData.user?.id} />
+              </div>
+            )}
           </div>
         </div>
       </main>
     </>
   );
 };
-
 export default Home;
 
 export async function getServerSideProps() {

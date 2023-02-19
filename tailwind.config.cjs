@@ -3,17 +3,17 @@
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    colors: {
-      primary: "#1495F7",
-      muted: "#cbcbcb",
-      foreground: "#2f2e33",
-      inverted: "#fff",
-      black: "#000",
-    },
     fontFamily: {
-      sans: ["Varela Round"],
+      sans: ["Figtree"],
     },
     extend: {
+      colors: {
+        primary: "#587af7",
+        muted: "#cbcbcb",
+        foreground: "#2f2e33",
+        inverted: "#fff",
+        black: "#000",
+      },
       borderRadius: {
         lg: "50%",
         md: ".75em",

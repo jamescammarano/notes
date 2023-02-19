@@ -1,4 +1,5 @@
 import { type Routine } from "@prisma/client";
+import { useSession } from "next-auth/react";
 import { createContext, useMemo, type ReactNode } from "react";
 import { api } from "../utils/api";
 
@@ -12,7 +13,11 @@ export const RoutineContext = createContext({
 });
 
 export const RoutineProvider = ({ children }: Props) => {
-  const { data, refetch } = api.todo.getAllLists.useQuery();
+  const { data: sessionData } = useSession();
+
+  const { data, refetch } = api.todo.getAllRoutines.useQuery(undefined, {
+    enabled: sessionData ? true : false,
+  });
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const value = useMemo(() => ({ routines: data ?? [], refetch }), [data]);

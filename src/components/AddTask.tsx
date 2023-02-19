@@ -1,25 +1,44 @@
-import type { Dispatch, FormEvent, SetStateAction } from "react";
+import type { FormEvent } from "react";
 import { useState } from "react";
+import { unsavedTaskSchema } from "../schemas/todo";
+import { api } from "../utils/api";
 
 type Props = {
-  triggerRefetch: () => Promise<void>;
-  setNewTask: Dispatch<SetStateAction<string>>;
-  newTask: string;
+  refetch: () => unknown;
+  routineId: string;
 };
 
-export const AddTask = ({ setNewTask }: Props) => {
+export const AddTask = ({ refetch, routineId }: Props) => {
   const [unsavedTask, setUnsavedTask] = useState("");
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  const { mutateAsync: createTask } = api.todo.createTask.useMutation();
 
-    setNewTask(unsavedTask);
-    setUnsavedTask("");
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (unsavedTask !== "") {
+      const parseResults = unsavedTaskSchema.safeParse({
+        task: unsavedTask,
+        routineId: routineId,
+      });
+      if (parseResults.success) {
+        try {
+          await createTask({
+            task: parseResults.data.task,
+            routineId: routineId,
+          });
+          setUnsavedTask("");
+          await refetch();
+        } catch (error) {
+          console.log(error);
+          //  TODO Error handling
+        }
+      }
+    }
   };
 
   return (
     <div>
-      <form onSubmit={(e) => handleSubmit(e)}>
+      <form onSubmit={(e) => void handleSubmit(e)}>
         <label htmlFor="habit">Habit</label>
         <input
           name="habit"
