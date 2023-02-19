@@ -1,21 +1,15 @@
 import Image from "next/image";
 import { type ReactElement, useState } from "react";
 import { type RoutineWithTasks } from "../types/prisma";
-import { EditRoutineDescription } from "./EditRoutineDescription";
+import { EditDescription } from "./EditDescription";
+
 type Props = {
   routine: RoutineWithTasks;
   refetch: () => Promise<unknown>;
 };
 
 export const Header = ({ routine, refetch }: Props): ReactElement => {
-  const [editing, setEditing] = useState(false);
-  const [newRoutineDetails, setNewRoutineDetails] = useState(routine);
-  const toggleEditor = () => {
-    setEditing(!editing);
-    if (!editing) {
-      setNewRoutineDetails(routine);
-    }
-  };
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
     <div className="relative">
@@ -25,7 +19,10 @@ export const Header = ({ routine, refetch }: Props): ReactElement => {
           background: `linear-gradient(0deg, rgb(47 46 51) 0%,  ${routine.dominant_color} 78%)`,
         }}
       >
-        <div onClick={() => toggleEditor()} className="m-4 flex cursor-pointer">
+        <div
+          onClick={() => setIsEditing(!isEditing)}
+          className="m-4 flex cursor-pointer"
+        >
           <Image
             className={`h-64 rounded`}
             src={routine.image}
@@ -43,15 +40,13 @@ export const Header = ({ routine, refetch }: Props): ReactElement => {
       </div>
       <div
         className={`absolute left-0 right-0 top-44 mx-auto w-2/3 max-w-xl ${
-          editing ? "block" : "hidden"
+          isEditing ? "block" : "hidden"
         }`}
       >
-        <EditRoutineDescription
-          newRoutineDetails={newRoutineDetails}
-          setNewRoutineDetails={setNewRoutineDetails}
+        <EditDescription
           refetch={refetch}
           routine={routine}
-          setEditing={setEditing}
+          setEditing={setIsEditing}
         />
       </div>
     </div>

@@ -20,50 +20,37 @@ type Props = {
   routine: RoutineWithTasks;
   setEditing: Dispatch<SetStateAction<boolean>>;
   refetch: () => Promise<unknown>;
-  newRoutineDetails: RoutineWithTasks;
-  setNewRoutineDetails: Dispatch<SetStateAction<RoutineWithTasks>>;
 };
 
 // regenerate image option
-export const EditRoutineDescription = ({
+export const EditDescription = ({
   routine,
   setEditing,
   refetch,
-  newRoutineDetails,
-  setNewRoutineDetails,
 }: Props): ReactElement => {
-  const session = useSession();
-  const [image, setImage] = useState({
-    image: newRoutineDetails.image,
-    bgColor: newRoutineDetails.inverted_color,
-    loading: false,
-  });
-
+  const { data: sessionData } = useSession();
+  const [updatedDetails, setUpdatedDetails] = useState(routine);
   const { mutateAsync: updateRoutine } = api.todo.updateRoutine.useMutation();
-  const { data: invertedColor, refetch: fetchImageBgColor } =
-    api.todo.getInvertedColor.useQuery(newRoutineDetails.image, {
-      enabled: image.loading,
-    });
 
-  useEffect(() => {
-    setNewRoutineDetails(routine);
-  }, [routine]);
+  const { data: invertedColor, refetch: fetchImageBgColor } =
+    api.todo.getInvertedColor.useQuery(updatedDetails.image);
 
   const handleOnChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setNewRoutineDetails({
-      ...newRoutineDetails,
+    setUpdatedDetails({
+      ...routine,
       [e.target.name]: e.target.value,
     });
   };
 
   const handleOnSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (newRoutineDetails.description === null) {
-      setNewRoutineDetails({ ...newRoutineDetails, description: "" });
+    if (routine.description === null) {
+      setUpdatedDetails({ ...updatedDetails, description: "" });
     }
-    const parsedResults = updateRoutineSchema.safeParse(newRoutineDetails);
+    const parsedResults = updateRoutineSchema.safeParse(updatedDetails);
+
     if (parsedResults.success) {
       try {
         await updateRoutine(parsedResults.data);
@@ -76,23 +63,20 @@ export const EditRoutineDescription = ({
   };
 
   const refreshImage = async () => {
-    setImage({ ...image, loading: true });
     const newUrl = generateImageURL(
-      session.data?.user?.id ?? randomUUID(),
-      newRoutineDetails.title
+      sessionData?.user?.id ?? randomUUID(),
+      routine.title
     );
-    setNewRoutineDetails({ ...newRoutineDetails, image: newUrl });
+    setUpdatedDetails({ ...updatedDetails, image: newUrl });
     await fetchImageBgColor();
   };
+
   useEffect(() => {
     if (invertedColor) {
-      setImage({
-        image: newRoutineDetails.image,
-        bgColor: invertedColor,
-        loading: false,
-      });
+      setUpdatedDetails({ ...updatedDetails, inverted_color: invertedColor });
     }
   }, [invertedColor]);
+
   return (
     <div className="h-90 w-90 flex flex-col rounded border-2 border-muted bg-foreground px-8 pb-8 tracking-tight text-inverted">
       <h1 className="mt-3 mb-6 text-xl">Edit details</h1>
@@ -100,14 +84,14 @@ export const EditRoutineDescription = ({
         <button
           onClick={() => void refreshImage()}
           className="group relative h-fit text-center"
-          style={{ background: image.bgColor }}
+          style={{ background: updatedDetails.inverted_color }}
         >
           <Image
             height={256}
             width={256}
             className="rounded border-4 border-inverted group-hover:bg-foreground group-hover:opacity-75"
-            src={image.image}
-            alt={newRoutineDetails.title}
+            src={updatedDetails.image}
+            alt={updatedDetails.title}
           />
           <div className="absolute top-1/2 flex h-fit w-full flex-col text-6xl opacity-0 group-hover:opacity-100">
             <Loop className="mx-auto" fontSize="inherit" />
@@ -126,7 +110,7 @@ export const EditRoutineDescription = ({
                 type="text"
                 placeholder="Title"
                 className="rounded border-2 border-muted bg-foreground p-0.5 px-2"
-                value={newRoutineDetails.title}
+                value={updatedDetails.title}
                 onChange={(e) => handleOnChange(e)}
               />
             </div>
@@ -138,8 +122,8 @@ export const EditRoutineDescription = ({
                 rows={4}
                 placeholder="Add an optional description"
                 value={
-                  newRoutineDetails.description !== null
-                    ? newRoutineDetails.description
+                  updatedDetails.description !== null
+                    ? updatedDetails.description
                     : undefined
                 }
                 onChange={(e) => handleOnChange(e)}
