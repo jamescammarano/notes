@@ -2,22 +2,22 @@ import { z } from "zod";
 
 export const TaskSchema = z.object({
   id: z.number(),
-  task: z.string().min(1, {
+  name: z.string().min(1, {
     message: "Task item must be filled out",
   }),
-  done: z.boolean(),
+  isFinished: z.boolean(),
   user_created: z.string(),
   routineId: z.string(),
 });
 
 export const unsavedTaskSchema = TaskSchema.omit({
   id: true,
-  done: true,
+  isFinished: true,
   user_created: true,
 });
 
 export const updateTaskSchema = TaskSchema.omit({
-  task: true,
+  name: true,
   user_created: true,
 });
 

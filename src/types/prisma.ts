@@ -10,9 +10,9 @@ const routineWithTasks = Prisma.validator<Prisma.RoutineArgs>()({
     inverted_color: true,
     tasks: {
       select: {
-        task: true,
+        name: true,
         id: true,
-        done: true,
+        isFinished: true,
       },
     },
   },

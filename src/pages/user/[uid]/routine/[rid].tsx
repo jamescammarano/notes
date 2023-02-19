@@ -4,7 +4,7 @@ import { AddTask } from "../../../../components/AddTask";
 import { Header } from "../../../../components/Header";
 import { api } from "../../../../utils/api";
 import { useRouter } from "next/router";
-import { Sidebar } from "../../../../components/layout/Sidebar";
+import { Sidebar } from "../../../../components/Sidebar";
 import { useEffect, useState, type ReactElement } from "react";
 import { unsavedTaskSchema } from "../../../../schemas/todo";
 import { type RoutineWithTasks } from "../../../../types/prisma";
@@ -15,10 +15,10 @@ type TaskListProps = {
   tasks:
     | {
         id: number;
-        task: string;
-        done: boolean;
+        name: string;
+        isFinished: boolean;
       }[];
-  refetch: () => unknown;
+  refetch: () => Promise<unknown>;
 };
 
 export const TaskList = ({
@@ -30,20 +30,20 @@ export const TaskList = ({
 
   const updateCompletion = async (task: {
     id: number;
-    task: string;
-    done: boolean;
+    name: string;
+    isFinished: boolean;
   }) => {
     const parseResults = unsavedTaskSchema.safeParse({
       id: task.id,
-      task: task.task,
-      done: task.done,
+      name: task.name,
+      isFinished: task.isFinished,
       routineId: routineId,
     });
     if (parseResults.success) {
       try {
         await updateTask({
           id: task.id,
-          done: !task.done,
+          isFinished: !task.isFinished,
           routineId: routineId,
         });
         await refetch();
@@ -61,10 +61,10 @@ export const TaskList = ({
           return (
             <div key={task.id} className="flex gap-2 pb-8">
               <div>{index + 1}.</div>
-              <div>{task.task}</div>
+              <div>{task.name}</div>
               <div>
                 <button onClick={() => void updateCompletion(task)}>
-                  {task.done ? <Check /> : <CheckBoxOutlineBlank />}
+                  {task.isFinished ? <Check /> : <CheckBoxOutlineBlank />}
                 </button>
               </div>
             </div>
@@ -84,7 +84,7 @@ const RoutinePage: NextPage = () => {
     inverted_color: "#000",
     dominant_color: "#fff",
     image: "",
-    tasks: [{ id: 0, task: "", done: false }],
+    tasks: [{ id: 0, name: "", isFinished: false }],
   });
   const [routineId, setRoutineId] = useState("");
 

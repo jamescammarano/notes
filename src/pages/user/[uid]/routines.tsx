@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { Sidebar } from "../../../components/layout/Sidebar";
+import { Sidebar } from "../../../components/Sidebar";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { RoutineContext } from "../../../context/Routine.context";
@@ -24,7 +24,7 @@ const Routine: NextPage = () => {
             <div className="flex h-16 w-full bg-muted p-2 text-4xl font-extrabold tracking-tight text-foreground">
               <h1 className="ml-4 ">Bedtime Routines</h1>
             </div>
-            <div className="flex">
+            <div className="flex flex-wrap">
               {routines &&
                 user &&
                 routines.map((routine) => {

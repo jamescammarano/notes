@@ -16,8 +16,8 @@ datasource db {
 
 model Task {
   id           Int     @id @default(autoincrement())
-  task         String
-  done         Boolean @default(false)
+  name         String
+  isFinished   Boolean @default(false)
   user_created String
   user         User    @relation(fields: [user_created], references: [id], onDelete: Cascade)
   routine      Routine @relation(fields: [routineId], references: [id])

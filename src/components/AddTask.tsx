@@ -4,7 +4,7 @@ import { unsavedTaskSchema } from "../schemas/todo";
 import { api } from "../utils/api";
 
 type Props = {
-  refetch: () => unknown;
+  refetch: () => Promise<unknown>;
   routineId: string;
 };
 
@@ -17,13 +17,13 @@ export const AddTask = ({ refetch, routineId }: Props) => {
     e.preventDefault();
     if (unsavedTask !== "") {
       const parseResults = unsavedTaskSchema.safeParse({
-        task: unsavedTask,
+        name: unsavedTask,
         routineId: routineId,
       });
       if (parseResults.success) {
         try {
           await createTask({
-            task: parseResults.data.task,
+            name: parseResults.data.name,
             routineId: routineId,
           });
           setUnsavedTask("");
