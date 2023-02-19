@@ -3,12 +3,13 @@ import Link from "next/link";
 import type { ReactElement } from "react";
 
 export const SignedIn = (): ReactElement => {
-  const { data } = useSession();
+  const { data: sessionData } = useSession();
+  const userId = sessionData?.user?.id;
   return (
     <>
       <div className="my-4 flex flex-col items-center justify-center bg-foreground">
         <Link
-          href={data?.user?.id ? `user/${data.user.id}/routines` : "/todo"}
+          href={userId ? `user/${userId}/routines` : "/todo"}
           className="btn-primary m-4"
         >
           {"          "}
