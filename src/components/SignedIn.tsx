@@ -9,9 +9,9 @@ export const SignedIn = (): ReactElement => {
       <div className="my-4 flex flex-col items-center justify-center bg-foreground">
         <Link
           href={data?.user?.id ? `user/${data.user.id}/routines` : "/todo"}
-          className="btn-primary m-4"
+          className="btn-rainbow m-4 rounded px-24 py-8 text-black"
         >
-          Bedtime Routine
+          {"          "}
         </Link>
         <div className="my-4 text-center">or</div>
         <button

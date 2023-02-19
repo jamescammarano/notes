@@ -112,13 +112,18 @@ export const todoRouter = createTRPCRouter({
         },
       });
     }),
+  getInvertedColor: protectedProcedure
+    .input(z.string())
+    .query(async ({ input }) => {
+      const colors = await getBackgroundColors(input);
+      return colors?.invertedColor || "#000";
+    }),
 });
 
 async function getBackgroundColors(url: string) {
   try {
     const dominantColor = (await getAverageColor(url)).hex;
     const invertedColor = invert(dominantColor);
-    console.log(invertedColor);
     return { dominantColor, invertedColor };
   } catch (err) {
     // TODO handle errors

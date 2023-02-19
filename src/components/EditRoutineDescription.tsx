@@ -1,12 +1,12 @@
 import { useSession } from "next-auth/react";
 import {
   useEffect,
-  type MouseEvent,
   type ChangeEvent,
   type Dispatch,
   type FormEvent,
   type SetStateAction,
   type ReactElement,
+  useState,
 } from "react";
 import { updateRoutineSchema } from "../schemas/todo";
 import { type RoutineWithTasks } from "../types/prisma";
@@ -14,6 +14,7 @@ import { api } from "../utils/api";
 import { generateImageURL } from "../utils/image-tools";
 import { randomUUID } from "crypto";
 import Image from "next/image";
+import { Loop } from "@mui/icons-material";
 
 type Props = {
   routine: RoutineWithTasks;
@@ -32,7 +33,17 @@ export const EditRoutineDescription = ({
   setNewRoutineDetails,
 }: Props): ReactElement => {
   const session = useSession();
+  const [image, setImage] = useState({
+    image: newRoutineDetails.image,
+    bgColor: newRoutineDetails.inverted_color,
+    loading: false,
+  });
+
   const { mutateAsync: updateRoutine } = api.todo.updateRoutine.useMutation();
+  const { data: invertedColor, refetch: fetchImageBgColor } =
+    api.todo.getInvertedColor.useQuery(newRoutineDetails.image, {
+      enabled: image.loading,
+    });
 
   useEffect(() => {
     setNewRoutineDetails(routine);
@@ -64,29 +75,45 @@ export const EditRoutineDescription = ({
     }
   };
 
-  const refreshImage = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const refreshImage = async () => {
+    setImage({ ...image, loading: true });
     const newUrl = generateImageURL(
       session.data?.user?.id ?? randomUUID(),
       newRoutineDetails.title
     );
     setNewRoutineDetails({ ...newRoutineDetails, image: newUrl });
+    await fetchImageBgColor();
   };
+  useEffect(() => {
+    if (invertedColor) {
+      setImage({
+        image: newRoutineDetails.image,
+        bgColor: invertedColor,
+        loading: false,
+      });
+    }
+  }, [invertedColor]);
   return (
     <div className="h-90 w-90 flex flex-col rounded border-2 border-muted bg-foreground px-8 pb-8 tracking-tight text-inverted">
       <h1 className="mt-3 mb-6 text-xl">Edit details</h1>
       <div className="flex w-full flex-row">
-        <div className="">
+        <button
+          onClick={() => void refreshImage()}
+          className="group relative h-fit text-center"
+          style={{ background: image.bgColor }}
+        >
           <Image
-            height={240}
-            width={240}
-            className="rounded border-4 border-inverted hover:opacity-50"
-            style={{ background: routine.inverted_color }}
-            src={newRoutineDetails.image}
+            height={256}
+            width={256}
+            className="rounded border-4 border-inverted group-hover:bg-foreground group-hover:opacity-75"
+            src={image.image}
             alt={newRoutineDetails.title}
           />
-          <button onClick={(e) => refreshImage(e)}>Refresh Image</button>
-        </div>
+          <div className="absolute top-1/2 flex h-fit w-full flex-col text-6xl opacity-0 group-hover:opacity-100">
+            <Loop className="mx-auto" fontSize="inherit" />
+            <div className=" text-lg font-bold">Refresh Image</div>
+          </div>
+        </button>
         <div className="ml-8 w-3/4">
           <form
             onSubmit={(e) => void handleOnSubmit(e)}
