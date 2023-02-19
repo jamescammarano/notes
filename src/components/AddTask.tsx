@@ -4,7 +4,7 @@ import { unsavedTaskSchema } from "../schemas/todo";
 import { api } from "../utils/api";
 
 type Props = {
-  refetch: () => unknown;
+  refetch: () => Promise<unknown>;
   routineId: string;
 };
 

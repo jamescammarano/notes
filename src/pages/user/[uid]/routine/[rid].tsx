@@ -18,7 +18,7 @@ type TaskListProps = {
         task: string;
         done: boolean;
       }[];
-  refetch: () => unknown;
+  refetch: () => Promise<unknown>;
 };
 
 export const TaskList = ({
