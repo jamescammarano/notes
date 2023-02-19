@@ -59,9 +59,9 @@ export const TaskList = ({
       {tasks &&
         tasks?.map((task, index) => {
           return (
-            <div key={task.id} className="flex gap-2 pb-8">
-              <div>{index + 1}.</div>
-              <div>{task.name}</div>
+            <div key={task.id} className="flex gap-3 pb-8">
+              <div className="">{index + 1}.</div>
+              <div className="w-2/3 text-left">{task.name}</div>
               <div>
                 <button onClick={() => void updateCompletion(task)}>
                   {task.isFinished ? <Check /> : <CheckBoxOutlineBlank />}
