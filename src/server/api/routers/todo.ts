@@ -28,9 +28,9 @@ export const todoRouter = createTRPCRouter({
         inverted_color: true,
         tasks: {
           select: {
-            task: true,
+            name: true,
             id: true,
-            done: true,
+            isFinished: true,
           },
         },
       },
@@ -40,7 +40,7 @@ export const todoRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.number(),
-        done: z.boolean(),
+        isFinished: z.boolean(),
         routineId: z.string(),
       })
     )
@@ -48,7 +48,7 @@ export const todoRouter = createTRPCRouter({
       return ctx.prisma.task.update({
         where: { id: input.id },
         data: {
-          done: input.done,
+          isFinished: input.isFinished,
           routineId: input.routineId,
         },
       });
@@ -79,14 +79,14 @@ export const todoRouter = createTRPCRouter({
   createTask: protectedProcedure
     .input(
       z.object({
-        task: z.string(),
+        name: z.string(),
         routineId: z.string(),
       })
     )
     .mutation(({ ctx, input }) => {
       return ctx.prisma.task.create({
         data: {
-          task: input.task,
+          name: input.name,
           user_created: ctx.session.user.id,
           routineId: input.routineId,
         },
