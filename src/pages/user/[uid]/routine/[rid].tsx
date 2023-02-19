@@ -56,10 +56,15 @@ export const TaskList = ({
 
   return (
     <div>
+      <div className="sticky mb-8 flex w-full gap-3 border-b-2 border-gray-600 pb-2">
+        <div className="">#</div>
+        <div className="w-2/3 text-left">Task</div>
+        <div>Finshed</div>
+      </div>
       {tasks &&
         tasks?.map((task, index) => {
           return (
-            <div key={task.id} className="flex gap-3 pb-8">
+            <div key={task.id} className="flex w-full gap-3 pb-3">
               <div className="">{index + 1}.</div>
               <div className="w-2/3 text-left">{task.name}</div>
               <div>
