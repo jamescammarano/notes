@@ -5,26 +5,55 @@ import { Header } from "../../../../components/Header";
 import { api } from "../../../../utils/api";
 import { useRouter } from "next/router";
 import { Sidebar } from "../../../../components/layout/Sidebar";
-import { useEffect, useState } from "react";
-import { unsavedTaskSchema, updateTaskSchema } from "../../../../schemas/todo";
+import { useEffect, useState, type ReactElement } from "react";
+import { unsavedTaskSchema } from "../../../../schemas/todo";
 import { type RoutineWithTasks } from "../../../../types/prisma";
-import type { Dispatch, ReactElement, SetStateAction } from "react";
 import { Check, CheckBoxOutlineBlank } from "@mui/icons-material";
 
 type TaskListProps = {
-  setIdOfTaskToBeUpdated: Dispatch<SetStateAction<number>>;
+  routineId: string;
   tasks:
     | {
         id: number;
         task: string;
         done: boolean;
       }[];
+  refetch: () => unknown;
 };
 
 export const TaskList = ({
   tasks,
-  setIdOfTaskToBeUpdated,
+  routineId,
+  refetch,
 }: TaskListProps): ReactElement => {
+  const { mutateAsync: updateTask } = api.todo.updateTask.useMutation();
+
+  const updateCompletion = async (task: {
+    id: number;
+    task: string;
+    done: boolean;
+  }) => {
+    const parseResults = unsavedTaskSchema.safeParse({
+      id: task.id,
+      task: task.task,
+      done: task.done,
+      routineId: routineId,
+    });
+    if (parseResults.success) {
+      try {
+        await updateTask({
+          id: task.id,
+          done: !task.done,
+          routineId: routineId,
+        });
+        await refetch();
+      } catch (error) {
+        console.log(error);
+        //  TODO Error handling
+      }
+    }
+  };
+
   return (
     <div>
       {tasks &&
@@ -34,7 +63,7 @@ export const TaskList = ({
               <div>{index + 1}.</div>
               <div>{task.task}</div>
               <div>
-                <button onClick={() => setIdOfTaskToBeUpdated(task.id)}>
+                <button onClick={() => void updateCompletion(task)}>
                   {task.done ? <Check /> : <CheckBoxOutlineBlank />}
                 </button>
               </div>
@@ -57,8 +86,6 @@ const RoutinePage: NextPage = () => {
     image: "",
     tasks: [{ id: 0, task: "", done: false }],
   });
-  const [newTask, setNewTask] = useState("");
-  const [idOfTaskToBeUpdated, setIdOfTaskToBeUpdated] = useState(NaN);
   const [routineId, setRoutineId] = useState("");
 
   const { data, refetch } = api.todo.getRoutine.useQuery(routineId, {
@@ -79,60 +106,7 @@ const RoutinePage: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
-  const { mutateAsync: createTask } = api.todo.createTask.useMutation();
-  const { mutateAsync: updateTask } = api.todo.updateTask.useMutation();
-
-  const submitNewTask = async () => {
-    if (newTask !== "") {
-      const parseResults = unsavedTaskSchema.safeParse({
-        task: newTask,
-        routineId: routineId,
-      });
-      if (parseResults.success) {
-        try {
-          await createTask({
-            task: parseResults.data.task,
-            routineId: routineId,
-          });
-          setNewTask("");
-          await refetch();
-        } catch (error) {
-          console.log(error);
-          //  TODO Error handling
-        }
-      }
-    }
-  };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    const toggleDone = async () => {
-      let task;
-      if (!Number.isNaN(idOfTaskToBeUpdated) && data?.tasks) {
-        task = data.tasks.filter((task) => task.id === idOfTaskToBeUpdated)[0];
-      }
-      if (task) {
-        const parseResults = updateTaskSchema.safeParse({
-          id: task.id,
-          done: !task.done,
-          routineId: routineId,
-        });
-        if (parseResults.success) {
-          try {
-            await updateTask({
-              id: task.id,
-              done: !task.done,
-              routineId: routineId,
-            });
-          } catch (error) {
-            //  TODO Error handling
-          }
-        }
-      }
-    };
-    void toggleDone();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [idOfTaskToBeUpdated]);
 
   return (
     <>
@@ -145,10 +119,11 @@ const RoutinePage: NextPage = () => {
           <div className="w-full">
             <Header routine={routine} refetch={refetch} />
             <div className="px-8">
-              {data && (
+              {data && routineId && (
                 <TaskList
-                  setIdOfTaskToBeUpdated={setIdOfTaskToBeUpdated}
+                  routineId={routineId}
                   tasks={routine.tasks}
+                  refetch={refetch}
                 />
               )}
               <div>
@@ -156,7 +131,7 @@ const RoutinePage: NextPage = () => {
                 <p className="my-2 text-muted">
                   Trying to include a new habit in your routine?
                 </p>
-                <AddTask newTask={newTask} setNewTask={setNewTask} />
+                <AddTask refetch={refetch} routineId={routineId} />
               </div>
             </div>
           </div>
