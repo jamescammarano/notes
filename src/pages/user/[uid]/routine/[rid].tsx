@@ -55,8 +55,8 @@ export const TaskList = ({
   };
 
   return (
-    <div>
-      <div className="sticky mb-8 flex w-full gap-3 border-b-2 border-gray-600 pb-2">
+    <div className="w-full">
+      <div className="sticky mb-8 flex gap-3 border-b-2 border-gray-600 pb-2">
         <div className="">#</div>
         <div className="w-2/3 text-left">Task</div>
         <div>Finshed</div>
@@ -64,14 +64,12 @@ export const TaskList = ({
       {tasks &&
         tasks?.map((task, index) => {
           return (
-            <div key={task.id} className="flex w-full gap-3 pb-3">
+            <div key={task.id} className="flex gap-3 pb-3">
               <div className="">{index + 1}.</div>
               <div className="w-2/3 text-left">{task.name}</div>
-              <div>
-                <button onClick={() => void updateCompletion(task)}>
-                  {task.isFinished ? <Check /> : <CheckBoxOutlineBlank />}
-                </button>
-              </div>
+              <button onClick={() => void updateCompletion(task)}>
+                {task.isFinished ? <Check /> : <CheckBoxOutlineBlank />}
+              </button>
             </div>
           );
         })}
@@ -121,20 +119,24 @@ const RoutinePage: NextPage = () => {
           <Sidebar />
           <div className="w-full">
             <Header routine={routine} refetch={refetch} />
-            <div className="px-8">
-              {data && routineId && (
-                <TaskList
-                  routineId={routineId}
-                  tasks={routine.tasks}
-                  refetch={refetch}
-                />
-              )}
+            <div className="p-8">
+              <div className="flex flex-col items-center pb-8">
+                {data && routineId && (
+                  <TaskList
+                    routineId={routineId}
+                    tasks={routine.tasks}
+                    refetch={refetch}
+                  />
+                )}
+              </div>
               <div>
-                <h2 className="text-2xl">Add Habit</h2>
-                <p className="my-2 text-muted">
-                  Trying to include a new habit in your routine?
-                </p>
-                <AddTask refetch={refetch} routineId={routineId} />
+                <div>
+                  <h2 className="text-2xl">Add Habit</h2>
+                  <p className="my-2 text-muted">
+                    Trying to include a new habit in your routine?
+                  </p>
+                  <AddTask refetch={refetch} routineId={routineId} />
+                </div>
               </div>
             </div>
           </div>
