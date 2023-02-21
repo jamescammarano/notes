@@ -17,6 +17,7 @@ import Image from "next/image";
 import { Loop } from "@mui/icons-material";
 
 type Props = {
+  isEditing: boolean;
   routine: RoutineWithTasks;
   setEditing: Dispatch<SetStateAction<boolean>>;
   refetch: () => Promise<unknown>;
@@ -25,6 +26,7 @@ type Props = {
 // regenerate image option
 export const EditDescription = ({
   routine,
+  isEditing,
   setEditing,
   refetch,
 }: Props): ReactElement => {
@@ -70,6 +72,12 @@ export const EditDescription = ({
     setUpdatedDetails({ ...updatedDetails, image: newUrl });
     await fetchImageBgColor();
   };
+
+  useEffect(() => {
+    if (!isEditing) {
+      setUpdatedDetails(routine);
+    }
+  }, [isEditing]);
 
   useEffect(() => {
     if (invertedColor) {
