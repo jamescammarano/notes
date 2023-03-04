@@ -31,7 +31,7 @@ export const Sidebar = (): ReactElement => {
     <div className="bg-background-400 py-4 text-muted-100 lg:min-h-screen lg:w-64 lg:border-r-[1px] lg:border-muted-300">
       <div className="fixed bottom-0 flex w-full flex-row items-center justify-between gap-2 border-t-2 border-primary bg-background-400 py-2 px-8 text-xl md:py-12 lg:relative lg:mt-8 lg:flex-col lg:items-start lg:gap-0 lg:border-t-0 lg:py-0">
         <Link href="/">
-          <div className="mt-1 flex flex-col items-center text-base tracking-tight sm:text-2xl md:flex-row md:text-4xl lg:mb-3 lg:items-start lg:gap-2 lg:text-2xl">
+          <div className="mt-1 flex flex-col items-center gap-2 text-base tracking-tight sm:text-2xl md:flex-row md:text-4xl lg:mb-3 lg:items-start lg:text-2xl">
             <Image
               src="https://i.imgur.com/CfsgSxq.png"
               width={35}
