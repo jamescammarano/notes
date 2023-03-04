@@ -1,15 +1,13 @@
 import { NightShelterRounded, PlaylistAdd } from "@mui/icons-material";
 import Link from "next/link";
 import { type ReactElement, useContext } from "react";
-import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { RoutineContext } from "../context/Routine.context";
 import { unsavedRoutineSchema } from "../schemas/todo";
 import { api } from "../utils/api";
 
 export const Sidebar = (): ReactElement => {
-  const { data: sessionData } = useSession();
   const { routines, refetch } = useContext(RoutineContext);
-  const userId = sessionData?.user?.id;
 
   const { mutateAsync } = api.todo.createRoutine.useMutation();
 
@@ -45,17 +43,16 @@ export const Sidebar = (): ReactElement => {
           <PlaylistAdd fontSize="inherit" />
           <span>Create Routine</span>
         </button>
-        <Link href={userId ? `/routines` : "/todo"}>Your Routines</Link>
+        <Link href={`/routines`}>Your Routines</Link>
         {routines &&
           routines.map((routine) => {
             return (
               <div key={routine.id}>
-                <Link href={userId ? `/routines/${routine.id}` : "/todo"}>
-                  {routine.title}
-                </Link>
+                <Link href={`/routines/${routine.id}`}>{routine.title}</Link>
               </div>
             );
           })}
+        <button onClick={() => void signOut()}>Sign Out</button>
       </div>
     </div>
   );

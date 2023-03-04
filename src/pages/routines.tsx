@@ -2,15 +2,12 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { Sidebar } from "../components/Sidebar";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { RoutineContext } from "../context/Routine.context";
 import { useContext } from "react";
 import Image from "next/image";
 
 const Routine: NextPage = () => {
-  const session = useSession();
   const { routines } = useContext(RoutineContext);
-  const user = session.data?.user?.id;
 
   return (
     <>
@@ -26,16 +23,15 @@ const Routine: NextPage = () => {
             </div>
             <div className="flex flex-wrap">
               {routines &&
-                user &&
                 routines.map((routine) => {
                   return (
                     <div
                       className="m-2 w-52 rounded bg-gray-600 bg-opacity-70 p-3 text-center"
                       key={routine.id}
                     >
-                      <Link href={`/user/${user}/routine/${routine.id}`}>
+                      <Link href={`/routines/${routine.id}`}>
                         <Image
-                          className="mb-2 rounded border-4 border-white  bg-opacity-70"
+                          className="mb-2 rounded border-4 border-white bg-opacity-70"
                           style={{ background: routine.inverted_color }}
                           alt={routine.title}
                           width={240}

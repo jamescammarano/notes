@@ -12,5 +12,13 @@
 }
 
 .splash {
-  background: linear-gradient(145.93deg, #864dff, #9b4dff, #ac55f0, #cd62ff);
+  background: linear-gradient(
+    145.93deg,
+    #864dff 25%,
+    #9b4dff 25%,
+    #9b4dff 50%,
+    #ac55f0 50%,
+    #ac55f0 75%,
+    #cd62ff 75%
+  );
 }

@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { NightShelterRounded } from "@mui/icons-material";
+import { NightShelterTwoTone } from "@mui/icons-material";
 import type { ClientSafeProvider, LiteralUnion } from "next-auth/react";
 import { getProviders, useSession, signIn, signOut } from "next-auth/react";
 import type { BuiltInProviderType } from "next-auth/providers";
@@ -46,12 +46,15 @@ export const SignedIn = (): ReactElement => {
   return (
     <>
       <div className="my-4 flex flex-col items-center">
-        <Link href="/routines" className="btn-primary m-4">
+        <Link
+          href="/routines"
+          className="rounded border-2 border-primary bg-primary py-4 px-8"
+        >
           Go to bedtime routines
         </Link>
         <div className="my-4 text-center">or</div>
         <button
-          className="rounded border-2 border-inverted py-2 px-3"
+          className="rounded border-2 border-inverted py-4 px-8"
           onClick={() => void signOut()}
         >
           Sign Out
@@ -73,7 +76,8 @@ const Home: NextPage<Providers> = ({ providers }) => {
         <div className="splash flex w-full items-center justify-center">
           <div className="flex flex-col gap-6 rounded-md bg-background px-10 py-16">
             <div className="flex items-center tracking-tight sm:text-[5rem]">
-              <NightShelterRounded
+              {/* https://github.com/material-components/material-components-web-react/issues/730 */}
+              <NightShelterTwoTone
                 className="text-primary"
                 fontSize="inherit"
               />
