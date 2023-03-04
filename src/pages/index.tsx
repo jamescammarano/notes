@@ -42,18 +42,11 @@ export const SignedOut = ({ providers }: Providers): ReactElement => {
 
 import type { ReactElement } from "react";
 
-export const SignedIn = ({
-  userId,
-}: {
-  userId: string | undefined;
-}): ReactElement => {
+export const SignedIn = (): ReactElement => {
   return (
     <>
       <div className="my-4 flex flex-col items-center justify-center bg-foreground">
-        <Link
-          href={userId ? `user/${userId}/routines` : "/todo"}
-          className="btn-primary m-4"
-        >
+        <Link href="/routines" className="btn-primary m-4">
           Go to bedtime routines
         </Link>
         <div className="my-4 text-center">or</div>
@@ -85,7 +78,7 @@ const Home: NextPage<Providers> = ({ providers }) => {
             {!sessionData && <SignedOut providers={providers} />}
             {sessionData && (
               <div className="my-4 flex flex-col items-center justify-center bg-foreground">
-                <SignedIn userId={sessionData.user?.id} />
+                <SignedIn />
               </div>
             )}
           </div>

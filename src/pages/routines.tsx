@@ -1,9 +1,9 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { Sidebar } from "../../../components/Sidebar";
+import { Sidebar } from "../components/Sidebar";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { RoutineContext } from "../../../context/Routine.context";
+import { RoutineContext } from "../context/Routine.context";
 import { useContext } from "react";
 import Image from "next/image";
 

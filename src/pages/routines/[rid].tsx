@@ -1,13 +1,13 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { AddTask } from "../../../../components/AddTask";
-import { Header } from "../../../../components/Header";
-import { api } from "../../../../utils/api";
+import { AddTask } from "../../components/AddTask";
+import { Header } from "../../components/Header";
+import { api } from "../../utils/api";
 import { useRouter } from "next/router";
-import { Sidebar } from "../../../../components/Sidebar";
+import { Sidebar } from "../../components/Sidebar";
 import { useEffect, useState, type ReactElement } from "react";
-import { unsavedTaskSchema } from "../../../../schemas/todo";
-import { type RoutineWithTasks } from "../../../../types/prisma";
+import { unsavedTaskSchema } from "../../schemas/todo";
+import { type RoutineWithTasks } from "../../types/prisma";
 import { Check, CheckBoxOutlineBlank } from "@mui/icons-material";
 
 type TaskListProps = {
