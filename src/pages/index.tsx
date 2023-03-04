@@ -28,9 +28,11 @@ export const SignedOut = ({ providers }: Providers): ReactElement => {
               </button>
             </div>
           ))}
-        <div className="my-4 text-center">or</div>
+        <div className="my-8 border-b-[1px] border-inverted px-8 py-1 text-center text-base">
+          or
+        </div>
         <Link
-          className="rounded border-2 border-inverted py-4 px-8"
+          className="rounded border-2 border-primary py-4 px-8"
           href="/todo"
         >
           Continue As Guest
@@ -73,21 +75,6 @@ const Home: NextPage<Providers> = ({ providers }) => {
       </Head>
       <main className="flex min-h-screen bg-background text-inverted">
         <div className="flex w-1/2 items-center justify-center">
-          <div className="flex flex-col gap-6 rounded-md bg-background px-10 py-16 text-4xl">
-            <div className="flex items-center tracking-tight">
-              Simplify your bedtime routine
-            </div>
-
-            <div className="flex items-center tracking-tight">What is it</div>
-            <div className="flex items-center tracking-tight">
-              What does it do
-            </div>
-            <div className="flex items-center tracking-tight">
-              Why is it important
-            </div>
-          </div>
-        </div>
-        <div className="splash flex w-full items-center justify-center">
           <div className="flex flex-col gap-6 rounded-md bg-background px-16 py-16">
             <div className="flex items-center tracking-tight sm:text-[5rem]">
               {/* https://github.com/material-components/material-components-web-react/issues/730 */}
@@ -105,6 +92,14 @@ const Home: NextPage<Providers> = ({ providers }) => {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+        <div className="splash flex w-1/2 items-center justify-center">
+          <div className="flex h-2/3 flex-col justify-center gap-6 rounded bg-background px-10 py-16 text-4xl tracking-tight">
+            <div>Simplify your bedtime routine</div>
+            <div>What is it</div>
+            <div>What does it do</div>
+            <div>Why is it important</div>
           </div>
         </div>
       </main>
