@@ -9,10 +9,10 @@ module.exports = {
     extend: {
       colors: {
         primary: "#864DFF",
-        muted: "#cbcbcb",
+        muted: { 100: "#cbcbcb", 300: "#4F4663" },
         foreground: "#2f2e33",
         inverted: "#fff",
-        background: "#1A171F",
+        background: { 100: "#1A171F", 400: "#0F0D12" },
       },
       borderRadius: {
         lg: "50%",

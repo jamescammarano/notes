@@ -14,13 +14,10 @@ const Routine: NextPage = () => {
       <Head>
         <title>Nightlite: Bedtime Routines</title>
       </Head>
-      <main className="flex min-h-screen flex-col bg-foreground text-inverted">
+      <main className="flex min-h-screen flex-col bg-background-400 text-inverted">
         <div className="flex">
           <Sidebar />
           <div className="w-4/5">
-            <div className="flex h-16 w-full bg-muted p-2 text-4xl font-extrabold tracking-tight text-foreground">
-              <h1 className="ml-4 ">Bedtime Routines</h1>
-            </div>
             <div className="flex flex-wrap">
               {routines &&
                 routines.map((routine) => {

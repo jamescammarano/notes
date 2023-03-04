@@ -109,7 +109,7 @@ const RoutinePage: NextPage = () => {
       <Head>
         <title>Nightlite: Bedtime Routine</title>
       </Head>
-      <main className="flex min-h-screen flex-col bg-foreground text-inverted">
+      <main className="flex min-h-screen flex-col bg-background-400 text-inverted">
         <div className="flex">
           <Sidebar />
           <div>
@@ -128,7 +128,7 @@ const RoutinePage: NextPage = () => {
               <div>
                 <div>
                   <h2 className="text-2xl">Add Habit</h2>
-                  <p className="my-2 text-muted">
+                  <p className="my-2 text-muted-100">
                     Trying to include a new habit in your routine?
                   </p>
                   <AddTask refetch={refetch} routineId={routineId} />

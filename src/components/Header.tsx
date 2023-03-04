@@ -14,7 +14,7 @@ export const Header = ({ routine, refetch }: Props): ReactElement => {
   return (
     <div className="relative">
       <div
-        className={`flex h-96 w-full bg-foreground p-2 font-extrabold tracking-tight text-inverted`}
+        className={`flex h-96 w-full bg-background-400 p-2 font-extrabold tracking-tight text-inverted`}
         style={{
           background: `linear-gradient(0deg, rgb(47 46 51) 0%,  ${routine.dominant_color} 78%)`,
         }}

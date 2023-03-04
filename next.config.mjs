@@ -19,8 +19,10 @@ const config = {
       {
         protocol: "https",
         hostname: "robohash.org",
-        port: "",
-        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "i.imgur.com",
       },
     ],
   },
