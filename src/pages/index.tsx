@@ -69,15 +69,15 @@ const Home: NextPage<Providers> = ({ providers }) => {
         <title>Nightlite</title>
       </Head>
       <main className="flex min-h-screen bg-background text-inverted">
-        <div className="w-6/12">Simplify your wind down</div>
+        <div className="w-1/2">Simplify your wind down</div>
         <div className="splash flex w-full items-center justify-center">
           <div className="flex flex-col gap-6 rounded-md bg-background px-10 py-16">
-            <div className="flex tracking-tight sm:text-[5rem]">
+            <div className="flex items-center tracking-tight sm:text-[5rem]">
               <NightShelterRounded
                 className="text-primary"
                 fontSize="inherit"
               />
-              <h1 className="text-inverted">Nightlite</h1>
+              <span className="text-inverted">Nightlite</span>
             </div>
             <div>
               {!sessionData && <SignedOut providers={providers} />}

@@ -30,20 +30,21 @@ export const Sidebar = (): ReactElement => {
 
   return (
     <div className="min-h-screen w-1/4 bg-black text-muted">
-      <div className="mx-3 my-6 ">
+      <div className="mx-3 my-6 flex flex-col gap-2 text-lg">
         <Link href="/">
-          <div className="mb-2 flex text-3xl">
-            <NightShelterRounded fontSize="inherit" className="text-primary" />
-            <div className="text-base text-inverted">Home</div>
+          <div className="flex items-center gap-2">
+            <NightShelterRounded className="text-primary" fontSize="inherit" />
+            <span className="text-inverted">Nightlite</span>
           </div>
-          <button
-            onClick={() => void handleClick()}
-            className="flex text-3xl text-muted"
-          >
-            <PlaylistAdd fontSize="inherit" />
-            <div className="text-base">Create Routine</div>
-          </button>
         </Link>
+
+        <button
+          onClick={() => void handleClick()}
+          className="flex items-center gap-2"
+        >
+          <PlaylistAdd fontSize="inherit" />
+          <span>Create Routine</span>
+        </button>
         <Link href={userId ? `/routines` : "/todo"}>Your Routines</Link>
         {routines &&
           routines.map((routine) => {
