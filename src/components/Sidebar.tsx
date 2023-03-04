@@ -1,10 +1,11 @@
-import { NightShelterOutlined, PlaylistAdd } from "@mui/icons-material";
+import { Add, FormatListBulletedOutlined, Logout } from "@mui/icons-material";
 import Link from "next/link";
 import { type ReactElement, useContext } from "react";
-import { signOut } from "next-auth/react";
 import { RoutineContext } from "../context/Routine.context";
 import { unsavedRoutineSchema } from "../schemas/todo";
 import { api } from "../utils/api";
+import Image from "next/image";
+import { signOut } from "next-auth/react";
 
 export const Sidebar = (): ReactElement => {
   const { routines, refetch } = useContext(RoutineContext);
@@ -27,33 +28,70 @@ export const Sidebar = (): ReactElement => {
   };
 
   return (
-    <div className="min-h-screen w-48 max-w-2xl bg-black text-muted">
-      <div className="mx-3 my-6 flex flex-col gap-2 text-lg">
+    <div className="bg-background-400 py-4 text-muted-100 lg:min-h-screen lg:w-64 lg:border-r-[1px] lg:border-muted-300">
+      <div className="fixed bottom-0 flex w-full flex-row items-center justify-between gap-2 border-t-2 border-primary bg-background-400 py-2 px-8 text-xl md:py-12 lg:relative lg:mt-8 lg:flex-col lg:items-start lg:gap-0 lg:border-t-0 lg:py-0">
         <Link href="/">
-          <div className="flex items-center gap-2">
-            <NightShelterOutlined className="text-primary" fontSize="inherit" />
-            <span className="text-inverted">Nightlite</span>
+          <div className="mt-1 flex flex-col items-center text-base tracking-tight sm:text-2xl md:flex-row md:text-4xl lg:mb-3 lg:items-start lg:gap-2 lg:text-2xl">
+            <Image
+              src="https://i.imgur.com/CfsgSxq.png"
+              width={35}
+              height={35}
+              alt=""
+            />
+            <span className="text-muted-100">Home</span>
           </div>
         </Link>
-
+        <Link href="/routines">
+          <div className="mt-1 flex flex-col items-center text-base tracking-tight sm:text-2xl md:flex md:flex-row md:gap-2 md:text-4xl lg:mb-3 lg:items-start lg:justify-start lg:text-2xl">
+            <FormatListBulletedOutlined fontSize="large" />
+            <span className="text-muted-100">Routines</span>
+          </div>
+        </Link>
         <button
           onClick={() => void handleClick()}
-          className="flex items-center gap-2"
+          className="mt-1 flex flex-col items-center text-base tracking-tight sm:text-2xl md:flex-row md:text-4xl lg:mt-0 lg:mb-3 lg:gap-2 lg:text-2xl"
         >
-          <PlaylistAdd fontSize="inherit" />
-          <span>Create Routine</span>
+          <Add fontSize="large" />
+          <span>New Routine</span>
         </button>
-        <Link href={`/routines`}>Your Routines</Link>
+
+        <button
+          className="mt-1 flex flex-col items-center text-base md:flex-row md:text-4xl lg:absolute lg:bottom-0 lg:mx-4 lg:hidden lg:px-4 lg:py-8 lg:text-xl"
+          onClick={() => void signOut()}
+        >
+          <Logout className="mr-2" fontSize="large" />
+          <span className="hidden lg:block">Sign Out</span>
+        </button>
+      </div>
+      <div className="hidden text-lg lg:block">
+        <div className="my-4 mx-4 h-[1px] bg-primary"></div>
         {routines &&
           routines.map((routine) => {
             return (
-              <div key={routine.id}>
-                <Link href={`/routines/${routine.id}`}>{routine.title}</Link>
+              <div
+                className="flex items-center gap-2 px-8 py-3"
+                key={routine.id}
+              >
+                <Image
+                  src={routine.image}
+                  width={50}
+                  height={50}
+                  alt={routine.title}
+                  style={{ background: routine.inverted_color }}
+                />
+                <Link href={`/routines/${routine.id}`} className="truncate">
+                  {routine.title}
+                  <div className="text-base text-muted-100/70">24 tasks</div>
+                </Link>
               </div>
             );
           })}
-        <button className="text-left" onClick={() => void signOut()}>
-          Sign Out
+        <button
+          className="mt-1 flex flex-row items-center text-base md:bottom-0 md:mx-4 md:px-4 md:py-8 md:text-xl lg:absolute lg:text-base"
+          onClick={() => void signOut()}
+        >
+          <Logout className="mr-2" fontSize="medium" />
+          <span>Sign Out</span>
         </button>
       </div>
     </div>
