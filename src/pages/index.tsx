@@ -72,9 +72,23 @@ const Home: NextPage<Providers> = ({ providers }) => {
         <title>Nightlite</title>
       </Head>
       <main className="flex min-h-screen bg-background text-inverted">
-        <div className="w-1/2">Simplify your wind down</div>
+        <div className="flex w-1/2 items-center justify-center">
+          <div className="flex flex-col gap-6 rounded-md bg-background px-10 py-16 text-4xl">
+            <div className="flex items-center tracking-tight">
+              Simplify your bedtime routine
+            </div>
+
+            <div className="flex items-center tracking-tight">What is it</div>
+            <div className="flex items-center tracking-tight">
+              What does it do
+            </div>
+            <div className="flex items-center tracking-tight">
+              Why is it important
+            </div>
+          </div>
+        </div>
         <div className="splash flex w-full items-center justify-center">
-          <div className="flex flex-col gap-6 rounded-md bg-background px-10 py-16">
+          <div className="flex flex-col gap-6 rounded-md bg-background px-16 py-16">
             <div className="flex items-center tracking-tight sm:text-[5rem]">
               {/* https://github.com/material-components/material-components-web-react/issues/730 */}
               <NightShelterTwoTone
