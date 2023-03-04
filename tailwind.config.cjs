@@ -8,11 +8,11 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: "#587af7",
+        primary: "#864DFF",
         muted: "#cbcbcb",
         foreground: "#2f2e33",
         inverted: "#fff",
-        black: "#000",
+        background: "#1A171F",
       },
       borderRadius: {
         lg: "50%",

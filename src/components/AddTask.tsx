@@ -47,9 +47,15 @@ export const AddTask = ({ refetch, routineId }: Props) => {
           value={unsavedTask}
           onChange={(e) => setUnsavedTask(e.target.value)}
         />
-        <button className="btn-primary" type="submit">
-          Add
-        </button>
+        <div className="mb-0">
+          <button
+            type="submit"
+            className="rounded border-2 border-primary bg-primary py-2 px-8"
+          >
+            Add Task
+            <div className="sr-only">Add Task</div>
+          </button>
+        </div>
       </form>
     </div>
   );

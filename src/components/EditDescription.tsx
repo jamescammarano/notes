@@ -138,7 +138,7 @@ export const EditDescription = ({
               />
             </div>
             <div className="place-self-end">
-              <button className="btn-primary my-2 px-12" type="submit">
+              <button className="my-2 w-full rounded border-2 border-primary bg-primary px-12 text-center">
                 Save
               </button>
             </div>
