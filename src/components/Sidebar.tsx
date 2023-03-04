@@ -1,4 +1,4 @@
-import { NightShelterRounded, PlaylistAdd } from "@mui/icons-material";
+import { NightShelterOutlined, PlaylistAdd } from "@mui/icons-material";
 import Link from "next/link";
 import { type ReactElement, useContext } from "react";
 import { signOut } from "next-auth/react";
@@ -27,11 +27,11 @@ export const Sidebar = (): ReactElement => {
   };
 
   return (
-    <div className="min-h-screen w-1/4 bg-black text-muted">
+    <div className="min-h-screen w-48 max-w-2xl bg-black text-muted">
       <div className="mx-3 my-6 flex flex-col gap-2 text-lg">
         <Link href="/">
           <div className="flex items-center gap-2">
-            <NightShelterRounded className="text-primary" fontSize="inherit" />
+            <NightShelterOutlined className="text-primary" fontSize="inherit" />
             <span className="text-inverted">Nightlite</span>
           </div>
         </Link>
@@ -52,7 +52,9 @@ export const Sidebar = (): ReactElement => {
               </div>
             );
           })}
-        <button onClick={() => void signOut()}>Sign Out</button>
+        <button className="text-left" onClick={() => void signOut()}>
+          Sign Out
+        </button>
       </div>
     </div>
   );

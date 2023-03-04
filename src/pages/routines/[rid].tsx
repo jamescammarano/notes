@@ -112,7 +112,7 @@ const RoutinePage: NextPage = () => {
       <main className="flex min-h-screen flex-col bg-foreground text-inverted">
         <div className="flex">
           <Sidebar />
-          <div className="w-full">
+          <div>
             {routine && <Header routine={routine} refetch={refetch} />}
 
             <div className="p-8">
