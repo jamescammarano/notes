@@ -10,3 +10,7 @@
     @apply bg-muted px-10 py-3 font-semibold text-foreground/70;
   }
 }
+
+.splash {
+  background: repeating-linear-gradient(#864dff, #9b4dff, #ac55f0, #cd62ff);
+}

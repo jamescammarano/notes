@@ -16,12 +16,12 @@ type Providers = {
 export const SignedOut = ({ providers }: Providers): ReactElement => {
   return (
     <>
-      <div className="my-4 flex flex-col items-center justify-center bg-foreground">
+      <div className="my-4 flex flex-col items-center justify-center text-xl">
         {providers &&
           Object.values(providers).map((provider) => (
             <div key={provider.name} style={{ marginBottom: 0 }}>
               <button
-                className="rounded border-2 border-inverted py-2 px-3"
+                className="rounded border-2 border-primary bg-primary py-4 px-8"
                 onClick={() => void signIn(provider.id)}
               >
                 Sign in with {provider.name}
@@ -30,7 +30,7 @@ export const SignedOut = ({ providers }: Providers): ReactElement => {
           ))}
         <div className="my-4 text-center">or</div>
         <Link
-          className="rounded border-2 border-inverted py-2 px-3"
+          className="rounded border-2 border-inverted py-4 px-8"
           href="/todo"
         >
           Continue As Guest
@@ -45,7 +45,7 @@ import type { ReactElement } from "react";
 export const SignedIn = (): ReactElement => {
   return (
     <>
-      <div className="my-4 flex flex-col items-center justify-center bg-foreground">
+      <div className="my-4 flex flex-col items-center">
         <Link href="/routines" className="btn-primary m-4">
           Go to bedtime routines
         </Link>
@@ -68,19 +68,25 @@ const Home: NextPage<Providers> = ({ providers }) => {
       <Head>
         <title>Nightlite</title>
       </Head>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-muted text-inverted">
-        <div className="container m-8 flex max-w-xl flex-col items-center justify-center gap-6 rounded-md bg-foreground px-4 py-16 ">
-          <h1 className="text-5xl font-extrabold tracking-tight text-inverted sm:text-[5rem] ">
-            <NightShelterRounded className="text-primary" fontSize="inherit" />
-            Nightlite
-          </h1>
-          <div>
-            {!sessionData && <SignedOut providers={providers} />}
-            {sessionData && (
-              <div className="my-4 flex flex-col items-center justify-center bg-foreground">
-                <SignedIn />
-              </div>
-            )}
+      <main className="flex min-h-screen bg-background text-inverted">
+        <div className="w-6/12">Simplify your wind down</div>
+        <div className="splash flex w-full items-center justify-center">
+          <div className="flex flex-col gap-6 rounded-md bg-background px-10 py-16">
+            <div className="flex tracking-tight sm:text-[5rem]">
+              <NightShelterRounded
+                className="text-primary"
+                fontSize="inherit"
+              />
+              <h1 className="text-inverted">Nightlite</h1>
+            </div>
+            <div>
+              {!sessionData && <SignedOut providers={providers} />}
+              {sessionData && (
+                <div className="my-4 flex flex-col items-center justify-center">
+                  <SignedIn />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </main>

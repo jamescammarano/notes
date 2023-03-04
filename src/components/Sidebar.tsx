@@ -29,7 +29,7 @@ export const Sidebar = (): ReactElement => {
   };
 
   return (
-    <div className="h-screen w-1/4 bg-black text-muted">
+    <div className="min-h-screen w-1/4 bg-black text-muted">
       <div className="mx-3 my-6 ">
         <Link href="/">
           <div className="mb-2 flex text-3xl">
