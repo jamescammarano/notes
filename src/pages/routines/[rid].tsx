@@ -1,13 +1,13 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { AddTask } from "../../../../components/AddTask";
-import { Header } from "../../../../components/Header";
-import { api } from "../../../../utils/api";
+import { AddTask } from "../../components/AddTask";
+import { Header } from "../../components/Header";
+import { api } from "../../utils/api";
 import { useRouter } from "next/router";
-import { Sidebar } from "../../../../components/Sidebar";
+import { Sidebar } from "../../components/Sidebar";
 import { useEffect, useState, type ReactElement } from "react";
-import { unsavedTaskSchema } from "../../../../schemas/todo";
-import { type RoutineWithTasks } from "../../../../types/prisma";
+import { unsavedTaskSchema } from "../../schemas/todo";
+import { type RoutineWithTasks } from "../../types/prisma";
 import { Check, CheckBoxOutlineBlank } from "@mui/icons-material";
 
 type TaskListProps = {
@@ -59,7 +59,7 @@ export const TaskList = ({
       <div className="sticky mb-8 flex gap-3 border-b-2 border-gray-600 pb-2">
         <div className="">#</div>
         <div className="w-2/3 text-left">Task</div>
-        <div>Finshed</div>
+        <div>Finished</div>
       </div>
       {tasks &&
         tasks?.map((task, index) => {
@@ -80,20 +80,15 @@ export const TaskList = ({
 const RoutinePage: NextPage = () => {
   const router = useRouter();
   const { rid } = router.query;
-  const [routine, setRoutine] = useState<RoutineWithTasks>({
-    id: "",
-    title: "",
-    description: "",
-    inverted_color: "#000",
-    dominant_color: "#fff",
-    image: "",
-    tasks: [{ id: 0, name: "", isFinished: false }],
-  });
+
+  const [routine, setRoutine] = useState<RoutineWithTasks>();
   const [routineId, setRoutineId] = useState("");
 
   const { data, refetch } = api.todo.getRoutine.useQuery(routineId, {
     enabled: rid ? true : false,
   });
+
+  const hasTasks = data && routineId && routine;
 
   useEffect(() => {
     if (rid && !Array.isArray(rid)) {
@@ -118,10 +113,11 @@ const RoutinePage: NextPage = () => {
         <div className="flex">
           <Sidebar />
           <div className="w-full">
-            <Header routine={routine} refetch={refetch} />
+            {routine && <Header routine={routine} refetch={refetch} />}
+
             <div className="p-8">
               <div className="flex flex-col items-center pb-8">
-                {data && routineId && (
+                {hasTasks && (
                   <TaskList
                     routineId={routineId}
                     tasks={routine.tasks}

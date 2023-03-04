@@ -44,6 +44,7 @@ export const Header = ({ routine, refetch }: Props): ReactElement => {
         }`}
       >
         <EditDescription
+          isEditing={isEditing}
           refetch={refetch}
           routine={routine}
           setEditing={setIsEditing}

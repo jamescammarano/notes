@@ -36,24 +36,20 @@ export const Sidebar = (): ReactElement => {
             <NightShelterRounded fontSize="inherit" className="text-primary" />
             <div className="text-base text-inverted">Home</div>
           </div>
+          <button
+            onClick={() => void handleClick()}
+            className="flex text-3xl text-muted"
+          >
+            <PlaylistAdd fontSize="inherit" />
+            <div className="text-base">Create Routine</div>
+          </button>
         </Link>
-
-        <button
-          onClick={() => void handleClick()}
-          className="flex text-3xl text-muted"
-        >
-          <PlaylistAdd fontSize="inherit" />
-          <div className="text-base">Create Routine</div>
-        </button>
+        <Link href={userId ? `/routines` : "/todo"}>Your Routines</Link>
         {routines &&
           routines.map((routine) => {
             return (
               <div key={routine.id}>
-                <Link
-                  href={
-                    userId ? `/user/${userId}/routine/${routine.id}` : "/todo"
-                  }
-                >
+                <Link href={userId ? `/routines/${routine.id}` : "/todo"}>
                   {routine.title}
                 </Link>
               </div>
