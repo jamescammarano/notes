@@ -1,6 +1,6 @@
-import { type Routine } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { createContext, useMemo, type ReactNode } from "react";
+import { type RoutineWithTasks } from "../types/prisma";
 import { api } from "../utils/api";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const RoutineContext = createContext({
-  routines: [] as Routine[],
+  routines: [] as RoutineWithTasks[],
   refetch: undefined as unknown as () => Promise<unknown>,
 });
 
