@@ -77,7 +77,7 @@ const Home: NextPage<Providers> = ({ providers }) => {
         <div className="relative flex w-full items-center justify-center md:w-1/2 ">
           <div className="splash absolute top-0 h-2/3 w-full md:hidden"></div>
           <div className="sticky z-50 mt-10 flex h-3/5 md:m-0 md:h-auto">
-            <div className="flex h-2/3 flex-col justify-center rounded-md border-2 border-primary bg-background-100 py-8 md:m-0 md:h-1/3 md:w-full md:border-0 md:py-16 md:px-16">
+            <div className="flex h-2/3 flex-col justify-center rounded-md border-2 border-primary bg-background-100 py-8 md:m-0 md:h-1/3 md:w-full md:border-0 md:bg-transparent md:py-16 md:px-16 lg:bg-background-100">
               <div className="flex justify-center text-5xl tracking-tight sm:text-4xl md:mb-3 md:items-center md:text-6xl lg:text-[5rem]">
                 <NightShelterOutlined
                   className="text-primary"
@@ -88,7 +88,6 @@ const Home: NextPage<Providers> = ({ providers }) => {
               <h1 className="mx-auto mt-4 w-52 text-center text-2xl md:mb-3 md:mt-0 md:w-auto md:text-3xl">
                 Simplify your wind down
               </h1>
-
               <div className="flex justify-center">
                 {!sessionData && <SignedOut providers={providers} />}
                 {sessionData && <SignedIn />}
@@ -102,12 +101,10 @@ const Home: NextPage<Providers> = ({ providers }) => {
             <div className="text-xl md:text-2xl">
               Nightlife is a task organizer with a focus on sleep hygiene
             </div>
-
             <div className="text-1xl flex flex-col gap-4">
               <li>Create multiple bedtime routines to fit your life</li>
               <li>Stay focused with pomodoro timer</li>
             </div>
-
             <div className="text-2xl">What is sleep hygiene?</div>
             <div>
               Sleep hygiene is doing this habit and not doing that habit

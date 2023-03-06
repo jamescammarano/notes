@@ -11,9 +11,10 @@ export const todoRouter = createTRPCRouter({
       where: { user_created: ctx.session.user.id, routineId: input },
     });
   }),
-  getAllRoutines: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.routine.findMany({
+  getAllRoutines: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.routine.findMany({
       where: { user_created: ctx.session.user.id },
+      include: { tasks: true },
     });
   }),
   getRoutine: protectedProcedure.input(z.string()).query(({ ctx, input }) => {
