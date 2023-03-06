@@ -65,7 +65,7 @@ export const Sidebar = (): ReactElement => {
       </div>
       <div className="hidden text-lg md:flex md:min-h-screen md:flex-col">
         <div className="my-2 mx-6 flex h-[1px] items-center bg-primary"></div>
-        <div className="">
+        <div>
           {routines &&
             routines.map((routine) => {
               return (
