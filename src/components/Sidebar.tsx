@@ -83,7 +83,7 @@ export const Sidebar = (): ReactElement => {
                   <Link href={`/routines/${routine.id}`} className="truncate">
                     {routine.title}
                     <div className="text-base text-muted-100/70">
-                      {routine.tasks.length ?? 0} tasks
+                      {routine?.tasks.length ?? 0} tasks
                     </div>
                   </Link>
                 </div>

@@ -32,6 +32,7 @@ export const RoutineSchema = z.object({
   tasks: TaskSchema,
   description: z.string(),
   user_created: z.string(),
+  details: z.boolean(),
 });
 
 export const unsavedRoutineSchema = RoutineSchema.omit({
