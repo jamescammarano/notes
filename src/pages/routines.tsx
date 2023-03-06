@@ -76,7 +76,7 @@ export const Cards: React.FC<{ data: RoutineWithTasks[] }> = ({ data }) => {
   return (
     <div className="lg:pb-12">
       <div className="mt-1 md:grid md:grid-cols-3 md:gap-3 lg:grid-cols-4 lg:gap-8">
-        <div className="splash col-span-2 hidden rounded-md sm:block md:col-span-2">
+        <div className="splash col-span-2 hidden h-full rounded-md sm:block md:col-span-2">
           <button
             onClick={() => void handleClick()}
             className="mx-auto flex h-full flex-row items-center md:p-2 md:text-[3.5rem] lg:text-[3.5rem]"
