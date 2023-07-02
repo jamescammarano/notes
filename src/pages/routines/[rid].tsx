@@ -56,23 +56,29 @@ export const TaskList = ({
 
   return (
     <div className="w-full">
-      <div className="sticky mb-8 flex gap-3 border-b-2 border-gray-600 pb-2">
-        <div className="">#</div>
-        <div className="w-2/3 text-left">Task</div>
+      <div className="sticky mb-8 grid grid-cols-12 gap-3 border-b-2 border-gray-600 pb-2">
+        <div>#</div>
+        <div className="col-span-10 text-left">Task</div>
         <div>Finished</div>
+
+        {tasks &&
+          tasks?.map((task, index) => {
+            return (
+              <>
+                <div className="">{index + 1}.</div>
+                <div className="col-span-10 truncate text-left">
+                  {task.name}
+                </div>
+                <button
+                  className="text-left"
+                  onClick={() => void updateCompletion(task)}
+                >
+                  {task.isFinished ? <Check /> : <CheckBoxOutlineBlank />}
+                </button>
+              </>
+            );
+          })}
       </div>
-      {tasks &&
-        tasks?.map((task, index) => {
-          return (
-            <div key={task.id} className="flex gap-3 pb-3">
-              <div className="">{index + 1}.</div>
-              <div className="w-2/3 text-left">{task.name}</div>
-              <button onClick={() => void updateCompletion(task)}>
-                {task.isFinished ? <Check /> : <CheckBoxOutlineBlank />}
-              </button>
-            </div>
-          );
-        })}
     </div>
   );
 };
@@ -114,7 +120,6 @@ const RoutinePage: NextPage = () => {
           <Sidebar />
           <div className="w-full">
             {routine && <Header routine={routine} refetch={refetch} />}
-
             <div className="p-8">
               <div className="flex flex-col items-center pb-8">
                 {hasTasks && (

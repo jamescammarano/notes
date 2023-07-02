@@ -86,7 +86,7 @@ export const EditDescription = ({
   }, [invertedColor]);
 
   return (
-    <div className="h-90 w-90 flex flex-col rounded border-2 border-muted-100 bg-foreground px-8 pb-8 tracking-tight text-inverted">
+    <div className="flex w-full flex-col rounded border-2 border-muted-100 bg-background-400 px-8 pb-8 tracking-tight text-inverted">
       <h1 className="mt-3 mb-6 text-xl">Edit details</h1>
       <div className="flex w-full flex-row">
         <button
@@ -117,7 +117,7 @@ export const EditDescription = ({
                 name="title"
                 type="text"
                 placeholder="Title"
-                className="rounded border-2 border-muted-100 bg-foreground p-0.5 px-2"
+                className="rounded border-2 border-muted-100 bg-background-100 p-0.5 px-2"
                 value={updatedDetails.title}
                 onChange={(e) => handleOnChange(e)}
               />
@@ -125,7 +125,7 @@ export const EditDescription = ({
             <div className="my-2 flex flex-col">
               <label htmlFor="description">Description</label>
               <textarea
-                className="h-full rounded border-2 border-muted-100 bg-foreground p-1 px-2"
+                className="h-full rounded border-2 border-muted-100 bg-background-100 p-1 px-2"
                 name="description"
                 rows={4}
                 placeholder="Add an optional description"
